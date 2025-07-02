@@ -5,75 +5,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Iniciar Sesión / Registrarse</title>
     <link rel="stylesheet" href="css/Estilos.css">
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            background: #f5f5f5;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-        }
-        .container {
-            background: #fff;
-            padding: 2rem 2.5rem;
-            border-radius: 10px;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-            width: 100%;
-            max-width: 350px;
-        }
-        .tabs {
-            display: flex;
-            margin-bottom: 1.5rem;
-        }
-        .tab {
-            flex: 1;
-            padding: 0.7rem 0;
-            text-align: center;
-            cursor: pointer;
-            border-bottom: 2px solid transparent;
-            transition: border 0.2s;
-        }
-        .tab.active {
-            border-bottom: 2px solid #007bff;
-            font-weight: bold;
-        }
-        form {
-            display: none;
-        }
-        form.active {
-            display: block;
-        }
-        .form-group {
-            margin-bottom: 1.2rem;
-        }
-        label {
-            display: block;
-            margin-bottom: 0.3rem;
-        }
-        input[type="email"], input[type="password"] {
-            width: 100%;
-            padding: 0.5rem;
-            border: 1px solid #ccc;
-            border-radius: 5px;
-        }
-        button {
-            width: 100%;
-            padding: 0.7rem;
-            background: #007bff;
-            color: #fff;
-            border: none;
-            border-radius: 5px;
-            font-size: 1rem;
-            cursor: pointer;
-            transition: background 0.2s;
-        }
-        button:hover {
-            background: #0056b3;
-        }
-    </style>
+    <link rel="stylesheet" href="css/login.css">
 </head>
-<body>
+<body class="login-body">
     <div class="container">
         <div class="tabs">
             <div class="tab active" id="loginTab">Iniciar Sesión</div>
@@ -122,5 +56,8 @@
             loginForm.classList.remove('active');
         });
     </script>
+    <footer class="login-footer">
+        <p>© 2025 SNKRS, Inc. Todos los derechos reservados.</p>
+    </footer>
 </body>
 </html> 
