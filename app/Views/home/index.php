@@ -6,6 +6,4 @@
     <title>Carrito</title>
 </head>
 <body>
-    
-</body>
-</html>
+ 
