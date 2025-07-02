@@ -6,6 +6,8 @@
     <title>Niños/as</title>
 </head>
 <body>
-    
+    <footer class="main-footer">
+        <p>© 2025 SNKRS, Inc. Todos los derechos reservados.</p>
+    </footer>
 </body>
 </html>

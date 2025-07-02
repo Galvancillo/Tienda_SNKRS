@@ -12,6 +12,9 @@ body {
   margin: 0;
   font-family: Arial, sans-serif;
   margin-top: 72px; /* Deja espacio para el navbar fijo */
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
 }
 
 /* Barra de navegación fija */
@@ -26,8 +29,7 @@ body {
 
 /* Contenedor interno con 3 zonas: logo, menú, acciones */
 .navbar-content {
-  display: grid;
-  grid-template-columns: auto 1fr auto;
+  display: flex;
   align-items: center;
   padding: 0 40px;
   height: 72px;
@@ -38,13 +40,25 @@ body {
 .logo-link {
   display: flex;
   align-items: center;
+  flex: 0 0 auto;
+  margin-right: 30px;
 }
 
 .logo-img {
-  width: 48px;
-  height: 48px;
-  object-fit: contain;
+  width: 40px;
+  height: 40px;
+  object-fit: cover;
   border-radius: 50%;
+  vertical-align: middle;
+  margin-right: 10px;
+}
+
+.logo-item {
+  list-style: none;
+  display: flex;
+  align-items: center;
+  margin-right: 10px;
+  padding: 0;
 }
 
 /* Menú centrado */
@@ -55,6 +69,8 @@ body {
   list-style: none;
   margin: 0;
   padding: 0;
+  flex: 1 1 0%;
+  align-items: center;
 }
 
 .nav-menu li a {
@@ -74,6 +90,8 @@ body {
   display: flex;
   align-items: center;
   gap: 18px;
+  flex: 0 0 auto;
+  margin-left: auto;
 }
 
 /* Caja de búsqueda */
@@ -84,6 +102,8 @@ body {
   border-radius: 24px;
   padding: 4px 16px;
   margin-right: 10px;
+  max-width: 220px;
+  width: 100%;
 }
 
 .search-box input {
@@ -93,6 +113,8 @@ body {
   margin-left: 8px;
   font-size: 1rem;
   color: #333;
+  min-width: 0;
+  width: 100%;
 }
 
 /* Estilo de los íconos */
@@ -117,4 +139,170 @@ body {
 
 .login-btn:hover {
   background: #0056b3;
+}
+
+@media (max-width: 1100px) {
+  .navbar-content {
+    padding: 0 10px;
+  }
+  .search-box {
+    max-width: 120px;
+  }
+  .nav-menu {
+    gap: 12px;
+  }
+  .login-btn {
+    padding: 7px 8px;
+    font-size: 0.95rem;
+  }
+}
+
+@media (max-width: 900px) {
+  .navbar-content {
+    padding: 0 4px;
+  }
+  .nav-menu {
+    gap: 6px;
+    font-size: 0.95rem;
+  }
+  .search-box {
+    max-width: 80px;
+    padding: 2px 6px;
+  }
+  .login-btn {
+    padding: 5px 4px;
+    font-size: 0.9rem;
+    min-width: 60px;
+  }
+}
+
+@media (max-width: 700px) {
+  .nav-menu {
+    gap: 2px;
+    font-size: 0.85rem;
+  }
+  .search-box {
+    display: none;
+  }
+  .login-btn {
+    font-size: 0.85rem;
+    padding: 4px 2px;
+    min-width: 40px;
+  }
+}
+
+.top-marcas-section {
+  margin: 40px auto;
+  max-width: 1400px;
+  text-align: center;
+}
+.top-marcas-section h2 {
+  font-size: 2rem;
+  margin-bottom: 24px;
+  color: #222;
+  letter-spacing: 1px;
+}
+.top-marcas-cards {
+  display: flex;
+  gap: 32px;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+.top-marca-card {
+  background: #ffe0f7;
+  border-radius: 18px;
+  width: 350px;
+  min-height: 420px;
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 4px 24px rgba(0,0,0,0.07);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 18px 12px 32px 12px;
+}
+.top-marca-card.nike { background: #ffe0f7; }
+.top-marca-card.adidas { background: #ffe0f7; }
+.top-marca-card.nb { background: #ffe0f7; }
+
+.top-marca-titulo {
+  font-size: 6rem;
+  font-weight: bold;
+  color: #ff1a3c;
+  position: absolute;
+  top: 18px;
+  left: 24px;
+  z-index: 1;
+  opacity: 0.9;
+  letter-spacing: -8px;
+}
+.top-marca-logo {
+  width: 70px;
+  margin-top: 110px;
+  margin-bottom: 10px;
+  z-index: 2;
+  position: relative;
+}
+.top-marca-zapato {
+  width: 80%;
+  max-width: 260px;
+  margin: 0 auto 18px auto;
+  z-index: 2;
+  position: relative;
+}
+.top-marca-btn {
+  background: #222;
+  color: #fff;
+  padding: 12px 32px;
+  border-radius: 6px;
+  text-decoration: none;
+  font-weight: bold;
+  font-size: 1.1rem;
+  margin-top: auto;
+  z-index: 2;
+  position: relative;
+  transition: background 0.2s;
+  display: inline-block;
+}
+.top-marca-btn:hover {
+  background: #ff1a3c;
+}
+
+/* Responsive */
+@media (max-width: 1200px) {
+  .top-marcas-cards {
+    gap: 16px;
+  }
+  .top-marca-card {
+    width: 300px;
+    min-height: 370px;
+  }
+  .top-marca-titulo {
+    font-size: 4.5rem;
+  }
+}
+@media (max-width: 900px) {
+  .top-marcas-cards {
+    flex-direction: column;
+    align-items: center;
+  }
+}
+
+.main-footer {
+  flex-shrink: 0;
+  width: 100%;
+  background: #f5f5f5;
+  text-align: center;
+  padding: 18px 0 12px 0;
+  font-size: 1rem;
+  color: #333;
+  border-top: 1px solid #e0e0e0;
+  letter-spacing: 1px;
+  position: relative;
+  bottom: 0;
+  left: 0;
+}
+
+#main-content {
+  flex: 1 0 auto;
 }
