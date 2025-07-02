@@ -26,8 +26,26 @@
       </div>
 
         <span class="icon">🛒</span>
+        <a href="login.php" class="login-btn">Iniciar Sesión</a>
     </div>
 
     </nav>
 </body>
 </html>
+
+<style>
+.login-btn {
+    display: inline-block;
+    margin-left: 15px;
+    padding: 7px 18px;
+    background: #007bff;
+    color: #fff;
+    border-radius: 5px;
+    text-decoration: none;
+    font-weight: bold;
+    transition: background 0.2s;
+}
+.login-btn:hover {
+    background: #0056b3;
+}
+</style>
