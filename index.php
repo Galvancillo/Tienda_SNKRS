@@ -4,8 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="./css/Estilos.css">
-    <title>Sneakers World</title>
-    <h1 class="titulo">Bienvenido a Sneakers World</h1>
+    <title>SNKRS World</title>
+    <h1 class="titulo">Bienvenido a SNKRS World</h1>
    
     
     
@@ -29,7 +29,7 @@
             <span class="icon">🔍</span>
             <input type="text" placeholder="Buscar">
           </div>
-          <span class="icon">🤍</span>
+  
           <span class="icon">🛒</span>
           <a href="login.php" class="login-btn">Iniciar Sesión</a>
         </div>
