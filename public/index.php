@@ -3,17 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<<<<<<< HEAD:public/index.php
     <link rel="stylesheet" href="./assets/css/Estilos.css">
-    <title>Sneakers World</title>
-=======
-    <link rel="stylesheet" href="./css/Estilos.css">
     <title>SNKRS World</title>
-    <h1 class="titulo">Bienvenido a SNKRS World</h1>
-   
-    
-    
->>>>>>> 853969769bda62adf23355031a3e63facdfe055d:index.php
 </head>
 <body>
     <nav class="navbar">
@@ -35,10 +26,6 @@
             <span class="icon">🔍</span>
             <input type="text" placeholder="Buscar">
           </div>
-<<<<<<< HEAD:public/index.php
-=======
-  
->>>>>>> 853969769bda62adf23355031a3e63facdfe055d:index.php
           <span class="icon">🛒</span>
           <a href="login.php" class="login-btn">Iniciar Sesión</a>
         </div>
