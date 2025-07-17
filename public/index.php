@@ -18,12 +18,12 @@
           <span class="brand">SNKRS WORLD</span>
         </a>
         <ul class="nav-menu">
-          <li><a href="http://localhost/Tienda_SNKRS/app/Views/productos/lonuevo.php">Lo Nuevo</a></li>
-          <li><a href="http://localhost/Tienda_SNKRS/app/Views/productos/hombre.php">Hombre</a></li>
-          <li><a href="http://localhost/Tienda_SNKRS/app/Views/productos/mujer.php">Mujer</a></li>
-          <li><a href="http://localhost/Tienda_SNKRS/app/Views/productos/niños.php">Niño/a</a></li>
-          <li><a href="http://localhost/Tienda_SNKRS/app/Views/productos/ofertas.php">Ofertas</a></li>
-          <li><a href="http://localhost/Tienda_SNKRS/app/Views/productos/snkrs.php">SNKRS</a></li>
+          <li><a href="/Tienda_SNKRS/app/Views/productos/lonuevo.php">Lo Nuevo</a></li>
+          <li><a href="/Tienda_SNKRS/app/Views/productos/hombre.php">Hombre</a></li>
+          <li><a href="/Tienda_SNKRS/app/Views/productos/mujer.php">Mujer</a></li>
+          <li><a href="/Tienda_SNKRS/app/Views/productos/niños.php">Niño/a</a></li>
+          <li><a href="/Tienda_SNKRS/app/Views/productos/ofertas.php">Ofertas</a></li>
+          <li><a href="/Tienda_SNKRS/app/Views/productos/snkrs.php">SNKRS</a></li>
         </ul>
         <div class="nav-right">
           <div class="search-box">

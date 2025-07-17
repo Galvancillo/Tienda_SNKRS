@@ -10,7 +10,7 @@
 <body>
     <nav class="navbar">
       <div class="navbar-content">
-        <a href="http://localhost/Tienda_SNKRS/public/index.php" class="logo-link">
+        <a href="/Tienda_SNKRS/public/index.php" class="logo-link">
           <img src="/Tienda_SNKRS/public/assets/img/logo.png" alt="Logo" class="logo-img">
           <span class="brand">SNKRS WORLD</span>
         </a>
@@ -28,7 +28,7 @@
             <input type="text" placeholder="Buscar">
           </div>
           <span class="icon">🛒</span>
-          <a href="../../login.php" class="login-btn">Iniciar Sesión</a>
+          <a href="/Tienda_SNKRS/public/login.php" class="login-btn">Iniciar Sesión</a>
         </div>
       </div>
     </nav>
