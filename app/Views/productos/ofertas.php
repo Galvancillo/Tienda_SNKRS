@@ -3,9 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="/Tienda_SNKRS/public/assets/css/hombre.css">
-
-    <title>Hombre | SNKRS World</title>
+    
+    <link rel="stylesheet" href="/Tienda_SNKRS/public/assets/css/ofertas.css">
+    <title>Ofertas | SNKRS World</title>
 </head>
 <body>
     <nav class="navbar">
@@ -28,16 +28,16 @@
             <input type="text" placeholder="Buscar">
           </div>
           <span class="icon">🛒</span>
-          <a href="/Tienda_SNKRS/public/login.php" class="login-btn">Iniciar Sesión</a>
+          <a href="../../login.php" class="login-btn">Iniciar Sesión</a>
         </div>
       </div>
     </nav>
     <main style="flex:1 0 auto; padding: 40px 0 0 0; text-align:center;">
-        <h1>Sección Hombre</h1>
-        <!-- Aquí va el contenido de la sección Hombre -->
+        <h1>Sección Ofertas</h1>
+        <!-- Aquí va el contenido de la sección Ofertas -->
     </main>
     <footer class="login-footer">
         <p>© 2025 SNKRS, Inc. Todos los derechos reservados.</p>
     </footer>
 </body>
-</html> 
+</html>

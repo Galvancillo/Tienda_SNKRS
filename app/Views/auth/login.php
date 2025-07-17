@@ -30,9 +30,14 @@
                 <input type="email" id="registerEmail" name="registerEmail" required>
             </div>
             <div class="form-group">
+                <label for="registerUsername">Nombre de usuario</label>
+                <input type="text" id="registerUsername" name="registerUsername" required>
+            </div>
+            <div class="form-group">
                 <label for="registerPassword">Contraseña</label>
                 <input type="password" id="registerPassword" name="registerPassword" required>
             </div>
+            
             <button type="submit">Registrarse</button>
         </form>
     </div>

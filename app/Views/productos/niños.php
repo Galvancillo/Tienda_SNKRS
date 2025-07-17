@@ -1,12 +1,42 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Niños/as</title>
+   
+    <link rel="stylesheet" href="/Tienda_SNKRS/public/assets/css/niños.css">
+    <title>Niños/as | SNKRS World</title>
 </head>
 <body>
-    <footer class="main-footer">
+    <nav class="navbar">
+      <div class="navbar-content">
+        <a href="http://localhost/Tienda_SNKRS/public/index.php" class="logo-link">
+          <img src="/Tienda_SNKRS/public/assets/img/logo.png" alt="Logo" class="logo-img">
+          <span class="brand">SNKRS WORLD</span>
+        </a>
+        <ul class="nav-menu">
+          <li><a href="lonuevo.php">Lo Nuevo</a></li>
+          <li><a href="Hombre.php">Hombre</a></li>
+          <li><a href="Mujer.php">Mujer</a></li>
+          <li><a href="Niños.php">Niño/a</a></li>
+          <li><a href="Ofertas.php">Ofertas</a></li>
+          <li><a href="SNKRS.php">SNKRS</a></li>
+        </ul>
+        <div class="nav-right">
+          <div class="search-box">
+            <span class="icon">🔍</span>
+            <input type="text" placeholder="Buscar">
+          </div>
+          <span class="icon">🛒</span>
+          <a href="../../login.php" class="login-btn">Iniciar Sesión</a>
+        </div>
+      </div>
+    </nav>
+    <main style="flex:1 0 auto; padding: 40px 0 0 0; text-align:center;">
+        <h1>Sección Niños/as</h1>
+        <!-- Aquí va el contenido de la sección Niños/as -->
+    </main>
+    <footer class="login-footer">
         <p>© 2025 SNKRS, Inc. Todos los derechos reservados.</p>
     </footer>
 </body>
