@@ -1,4 +1,8 @@
 <?php
-require_once __DIR__ . '/../app/Controllers/AuthController.php';
-$controller = new AuthController();
-$controller->login(); 
+
+require_once __DIR__ . '/../vendor/autoload.php';
+
+use App\Controllers\AuthController;
+
+$auth = new AuthController();
+$auth->showLogin(); 
