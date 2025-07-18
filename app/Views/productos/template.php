@@ -33,7 +33,7 @@
                         <span class="icon">🔍</span>
                         <input type="text" placeholder="Buscar">
                     </div>
-                    <span class="icon">🛒</span>
+                    <a href="/Tienda_SNKRS/public/productos/carrito" class="icon" title="Ver carrito">🛒</a>
                     <?php if (isset($_SESSION['user_id'])): ?>
                         <a href="/Tienda_SNKRS/public/logout" class="login-btn">Cerrar Sesión</a>
                     <?php else: ?>
@@ -45,13 +45,39 @@
 
         <main class="productos-container">
             <h1 class="categoria-titulo"><?php echo $titulo ?? 'Productos'; ?></h1>
-            
-            <?php if (empty($productos)): ?>
+            <?php if (isset($esCarrito) && $esCarrito): ?>
+                <div style="display: flex; justify-content: space-between; align-items: flex-start; min-height: 350px;">
+                    <div style="flex: 1; padding: 40px;">
+                        <h2 style="font-size:2.5rem; margin-bottom: 1rem;">Bolsa de compra</h2>
+                        <p style="font-size:1.2rem; color:#333;">No hay productos en tu bolsa de compra.</p>
+                    </div>
+                    <div style="flex: 1; max-width: 400px; padding: 40px; background: #fff; border-radius: 16px; box-shadow: 0 2px 8px rgba(0,0,0,0.07);">
+                        <h2 style="font-size:2rem; margin-bottom: 1rem;">Resumen</h2>
+                        <div style="margin-bottom: 1.5rem;">
+                            <div style="display: flex; justify-content: space-between; align-items: center;">
+                                <span>Subtotal <span title="Suma de productos en la bolsa">&#9432;</span></span>
+                                <span>—</span>
+                            </div>
+                            <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 0.5rem;">
+                                <span>Gastos de envío y gestión estimados</span>
+                                <span>Gratis</span>
+                            </div>
+                        </div>
+                        <hr>
+                        <div style="display: flex; justify-content: space-between; align-items: center; font-weight: bold; margin: 1.5rem 0;">
+                            <span>Total</span>
+                            <span>—</span>
+                        </div>
+                        <button style="width:100%; background:#eee; color:#aaa; border:none; border-radius:30px; padding:1rem; font-size:1.1rem; margin-bottom:1rem; cursor:not-allowed;">Pagar con tarjeta</button>
+                        <button style="width:100%; background:#fafafa; color:#888; border:1px solid #eee; border-radius:30px; padding:1rem; font-size:1.1rem; font-style:italic; cursor:not-allowed;">PayPal</button>
+                    </div>
+                </div>
+            <?php elseif (empty($productos)): ?>
                 <p class="no-productos">No hay productos disponibles en esta categoría.</p>
             <?php else: ?>
                 <div class="productos-grid">
                     <?php foreach ($productos as $producto): ?>
-                        <div class="producto-card">
+                        <div class="producto-card" data-id="<?php echo $producto['id']; ?>">
                             <img src="<?php echo $producto['imagen_url'] ?? 'https://via.placeholder.com/200'; ?>" 
                                  alt="<?php echo htmlspecialchars($producto['nombre']); ?>" 
                                  class="producto-img">
@@ -65,6 +91,97 @@
         </main>
     </div>
 
+    <!-- Modal de vista rápida de producto -->
+    <div id="modalProducto" class="modal" style="display:none; position:fixed; z-index:2000; left:0; top:0; width:100vw; height:100vh; background:rgba(0,0,0,0.4);">
+        <div class="modal-content" style="background:#fff; margin:40px auto; padding:30px; border-radius:16px; max-width:600px; position:relative;">
+            <span class="close" id="cerrarModalProducto" style="position:absolute; top:10px; right:20px; font-size:2rem; cursor:pointer;">&times;</span>
+            <div id="modalProductoBody">
+                <!-- Aquí se carga la info del producto -->
+            </div>
+        </div>
+    </div>
+    <script>
+    // Función para abrir el modal de producto
+    function abrirModalProducto(id) {
+        fetch(`/Tienda_SNKRS/public/productos/detalle/${id}`)
+            .then(res => res.json())
+            .then(data => {
+                if (!data.success) { alert('Error al cargar producto'); return; }
+                const p = data.producto;
+                let tallasHtml = '';
+                if (p.tallas && p.tallas.length > 0) {
+                    tallasHtml = '<label for="modalTalla">Talla:</label> <select id="modalTalla">';
+                    p.tallas.forEach(t => {
+                        if (t.stock > 0) {
+                            tallasHtml += `<option value="${t.id}">${t.talla} (${t.stock} disponibles)</option>`;
+                        }
+                    });
+                    tallasHtml += '</select>';
+                } else {
+                    tallasHtml = '<span style="color:#c00">Sin tallas disponibles</span>';
+                }
+                document.getElementById('modalProductoBody').innerHTML = `
+                    <div style='display:flex; gap:30px;'>
+                        <img src='${p.imagen_url ?? 'https://via.placeholder.com/250'}' alt='${p.nombre}' style='width:220px; height:220px; object-fit:cover; border-radius:10px;'>
+                        <div style='flex:1;'>
+                            <h2 style='margin-top:0;'>${p.nombre}</h2>
+                            <p style='color:#555;'>${p.descripcion ?? ''}</p>
+                            <div style='font-size:1.3rem; font-weight:bold; margin:10px 0;'>$${parseFloat(p.precio).toFixed(2)}</div>
+                            ${tallasHtml}
+                            <div style='margin:15px 0;'>
+                                <label for="modalCantidad">Cantidad:</label>
+                                <input type="number" id="modalCantidad" min="1" value="1" style="width:60px;">
+                            </div>
+                            <button id="btnAgregarAlCarrito" style="background:#111; color:#fff; border:none; border-radius:8px; padding:10px 30px; font-size:1.1rem; cursor:pointer;">Agregar al carrito</button>
+                        </div>
+                    </div>
+                `;
+                document.getElementById('modalProducto').style.display = 'block';
+                document.getElementById('btnAgregarAlCarrito').onclick = function() {
+                    const id_talla = document.getElementById('modalTalla') ? document.getElementById('modalTalla').value : null;
+                    const cantidad = document.getElementById('modalCantidad').value;
+                    fetch('/Tienda_SNKRS/public/productos/agregar-al-carrito', {
+                        method: 'POST',
+                        headers: { 'X-Requested-With': 'XMLHttpRequest', 'Content-Type': 'application/x-www-form-urlencoded' },
+                        body: `id_producto=${encodeURIComponent(p.id)}&id_talla=${encodeURIComponent(id_talla)}&cantidad=${encodeURIComponent(cantidad)}`
+                    })
+                    .then(res => res.json())
+                    .then(resp => {
+                        if (resp.success) {
+                            alert('Producto agregado al carrito');
+                            document.getElementById('modalProducto').style.display = 'none';
+                        } else {
+                            alert(resp.error || 'Error al agregar al carrito');
+                        }
+                    });
+                };
+            });
+    }
+    // Cerrar modal
+    document.getElementById('cerrarModalProducto').onclick = function() {
+        document.getElementById('modalProducto').style.display = 'none';
+    };
+    window.onclick = function(event) {
+        if (event.target == document.getElementById('modalProducto')) {
+            document.getElementById('modalProducto').style.display = 'none';
+        }
+    };
+    // Reemplazar botones Comprar
+    document.addEventListener('DOMContentLoaded', function() {
+        document.querySelectorAll('.comprar-btn').forEach(btn => {
+            const card = btn.closest('.producto-card');
+            if (card) {
+                const id = card.querySelector('img').src.match(/([a-f0-9]{40})\./) ? card.querySelector('img').src.match(/([a-f0-9]{40})\./)[1] : null;
+                btn.onclick = function(e) {
+                    e.preventDefault();
+                    // Mejor: usar data-id en el botón o en el producto
+                    const idProd = card.getAttribute('data-id') || card.querySelector('img').getAttribute('data-id') || btn.getAttribute('data-id') || btn.dataset.id;
+                    abrirModalProducto(idProd || btn.value || btn.getAttribute('value'));
+                };
+            }
+        });
+    });
+    </script>
     <!-- Footer -->
     <footer>
         <p>© 2025 SNKRS, Inc. Todos los derechos reservados.</p>

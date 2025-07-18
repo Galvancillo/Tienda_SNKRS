@@ -1,0 +1,59 @@
+[18-Jul-2025 06:38:49 Europe/Berlin] Intento de login - Email: admin@admin.com
+[18-Jul-2025 06:38:49 Europe/Berlin] Usuario encontrado: No
+[18-Jul-2025 06:38:54 Europe/Berlin] Intento de login - Email: admin@admin.com
+[18-Jul-2025 06:38:54 Europe/Berlin] Usuario encontrado: No
+[18-Jul-2025 06:39:09 Europe/Berlin] Intento de login - Email: admin@admin
+[18-Jul-2025 06:39:09 Europe/Berlin] Usuario encontrado: Sí
+[18-Jul-2025 06:39:09 Europe/Berlin] Contraseña ingresada: admin123
+[18-Jul-2025 06:39:09 Europe/Berlin] Contraseña en DB: admin123
+[18-Jul-2025 06:40:42 Europe/Berlin] Intento de login - Email: admin@admin
+[18-Jul-2025 06:40:42 Europe/Berlin] Usuario encontrado: Sí
+[18-Jul-2025 06:40:42 Europe/Berlin] Contraseña ingresada: admin123
+[18-Jul-2025 06:40:42 Europe/Berlin] Contraseña en DB: admin123
+[18-Jul-2025 06:49:18 Europe/Berlin] Intento de login - Email: angelgalvan82@gmail.com
+[18-Jul-2025 06:49:18 Europe/Berlin] Usuario encontrado: Sí
+[18-Jul-2025 06:49:18 Europe/Berlin] Contraseña ingresada: Angelito1
+[18-Jul-2025 06:49:18 Europe/Berlin] Contraseña en DB: Angelito1
+[18-Jul-2025 06:49:32 Europe/Berlin] Intento de login - Email: admin@admin
+[18-Jul-2025 06:49:32 Europe/Berlin] Usuario encontrado: Sí
+[18-Jul-2025 06:49:32 Europe/Berlin] Contraseña ingresada: admin123
+[18-Jul-2025 06:49:32 Europe/Berlin] Contraseña en DB: admin123
+[18-Jul-2025 08:21:41 Europe/Berlin] Intento de login - Email: admi@admin
+[18-Jul-2025 08:21:41 Europe/Berlin] Usuario encontrado: No
+[18-Jul-2025 08:21:48 Europe/Berlin] Intento de login - Email: admin@admin
+[18-Jul-2025 08:21:48 Europe/Berlin] Usuario encontrado: Sí
+[18-Jul-2025 08:21:48 Europe/Berlin] Contraseña ingresada: admin123
+[18-Jul-2025 08:21:48 Europe/Berlin] Contraseña en DB: admin123
+[18-Jul-2025 18:59:10 Europe/Berlin] Intento de login - Email: admin@admin
+[18-Jul-2025 18:59:10 Europe/Berlin] Usuario encontrado: Sí
+[18-Jul-2025 18:59:10 Europe/Berlin] Contraseña ingresada: andmin123
+[18-Jul-2025 18:59:11 Europe/Berlin] Contraseña en DB: admin123
+[18-Jul-2025 18:59:18 Europe/Berlin] Intento de login - Email: admin@admin
+[18-Jul-2025 18:59:18 Europe/Berlin] Usuario encontrado: Sí
+[18-Jul-2025 18:59:18 Europe/Berlin] Contraseña ingresada: admin123
+[18-Jul-2025 18:59:18 Europe/Berlin] Contraseña en DB: admin123
+[18-Jul-2025 22:17:00 Europe/Berlin] PHP Notice:  session_start(): Ignoring session_start() because a session is already active in C:\xampp\htdocs\Tienda_SNKRS\app\Controllers\ProductoController.php on line 430
+[18-Jul-2025 22:17:10 Europe/Berlin] PHP Notice:  session_start(): Ignoring session_start() because a session is already active in C:\xampp\htdocs\Tienda_SNKRS\app\Controllers\ProductoController.php on line 430
+[18-Jul-2025 22:17:15 Europe/Berlin] PHP Notice:  session_start(): Ignoring session_start() because a session is already active in C:\xampp\htdocs\Tienda_SNKRS\app\Controllers\ProductoController.php on line 430
+[18-Jul-2025 22:18:42 Europe/Berlin] PHP Notice:  session_start(): Ignoring session_start() because a session is already active in C:\xampp\htdocs\Tienda_SNKRS\app\Controllers\ProductoController.php on line 430
+[18-Jul-2025 22:20:03 Europe/Berlin] PHP Notice:  session_start(): Ignoring session_start() because a session is already active in C:\xampp\htdocs\Tienda_SNKRS\app\Controllers\ProductoController.php on line 430
+[18-Jul-2025 22:42:46 Europe/Berlin] PHP Notice:  session_start(): Ignoring session_start() because a session is already active in C:\xampp\htdocs\Tienda_SNKRS\app\Controllers\ProductoController.php on line 430
+[18-Jul-2025 22:46:25 Europe/Berlin] PHP Notice:  session_start(): Ignoring session_start() because a session is already active in C:\xampp\htdocs\Tienda_SNKRS\app\Controllers\ProductoController.php on line 430
+[18-Jul-2025 22:50:24 Europe/Berlin] PHP Notice:  session_start(): Ignoring session_start() because a session is already active in C:\xampp\htdocs\Tienda_SNKRS\app\Controllers\ProductoController.php on line 430
+[18-Jul-2025 22:50:27 Europe/Berlin] PHP Notice:  session_start(): Ignoring session_start() because a session is already active in C:\xampp\htdocs\Tienda_SNKRS\app\Controllers\ProductoController.php on line 430
+[18-Jul-2025 22:50:49 Europe/Berlin] Intento de login - Email: admin@admin
+[18-Jul-2025 22:50:49 Europe/Berlin] Usuario encontrado: Sí
+[18-Jul-2025 22:50:49 Europe/Berlin] Contraseña ingresada: admin123
+[18-Jul-2025 22:50:49 Europe/Berlin] Contraseña en DB: admin123
+[18-Jul-2025 22:51:08 Europe/Berlin] Intento de login - Email: angelgalvan82@gmail.com
+[18-Jul-2025 22:51:08 Europe/Berlin] Usuario encontrado: Sí
+[18-Jul-2025 22:51:08 Europe/Berlin] Contraseña ingresada: Angelito1
+[18-Jul-2025 22:51:08 Europe/Berlin] Contraseña en DB: Angelito1
+[18-Jul-2025 22:52:17 Europe/Berlin] Intento de login - Email: admin@admin
+[18-Jul-2025 22:52:17 Europe/Berlin] Usuario encontrado: Sí
+[18-Jul-2025 22:52:17 Europe/Berlin] Contraseña ingresada: admin@admin
+[18-Jul-2025 22:52:17 Europe/Berlin] Contraseña en DB: admin123
+[18-Jul-2025 22:52:25 Europe/Berlin] Intento de login - Email: admin@admin
+[18-Jul-2025 22:52:25 Europe/Berlin] Usuario encontrado: Sí
+[18-Jul-2025 22:52:25 Europe/Berlin] Contraseña ingresada: admin123
+[18-Jul-2025 22:52:25 Europe/Berlin] Contraseña en DB: admin123

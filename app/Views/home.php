@@ -26,7 +26,7 @@
             <span class="icon">🔍</span>
             <input type="text" placeholder="Buscar">
           </div>
-          <span class="icon">🛒</span>
+          <a href="/Tienda_SNKRS/public/productos/carrito" class="icon" title="Ver carrito">🛒</a>
           <a href="/Tienda_SNKRS/public/login" class="login-btn">Iniciar Sesión</a>
         </div>
       </div>

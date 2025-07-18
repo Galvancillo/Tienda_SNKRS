@@ -83,7 +83,7 @@ class ProductoController {
             $nombre = $_POST['nombre'] ?? '';
             $descripcion = $_POST['descripcion'] ?? '';
             $precio = $_POST['precio'] ?? 0;
-            $stock = $_POST['stock'] ?? 0;
+            $id_categoria = $_POST['categoria'] ?? null;
 
             // Manejar la subida de imagen
             $imagenInfo = null;
@@ -91,21 +91,27 @@ class ProductoController {
                 $imagenInfo = $this->handleImageUpload($_FILES['imagen']);
             }
 
-            $sql = "INSERT INTO producto (nombre, descripcion, precio, stock, imagen_url, imagen_nombre, imagen_tipo) 
+            $sql = "INSERT INTO producto (nombre, descripcion, precio, id_categoria, imagen_url, imagen_nombre, imagen_tipo) 
                     VALUES (?, ?, ?, ?, ?, ?, ?)";
-            
             $params = [
                 $nombre,
                 $descripcion,
                 $precio,
-                $stock,
+                $id_categoria,
                 $imagenInfo ? $imagenInfo['url'] : null,
                 $imagenInfo ? $imagenInfo['nombre'] : null,
                 $imagenInfo ? $imagenInfo['tipo'] : null
             ];
-
             $this->db->query($sql, $params);
-            
+            $id_producto = $this->db->lastInsertId();
+
+            // Guardar stock por talla
+            if (isset($_POST['stock_talla'])) {
+                foreach ($_POST['stock_talla'] as $id_talla => $stock) {
+                    $this->db->query("INSERT INTO producto_talla (id_producto, id_talla, stock) VALUES (?, ?, ?)", [$id_producto, $id_talla, $stock]);
+                }
+            }
+
             header('Content-Type: application/json');
             echo json_encode(['success' => true]);
         } catch (\Exception $e) {
@@ -120,7 +126,7 @@ class ProductoController {
             $nombre = $_POST['nombre'] ?? '';
             $descripcion = $_POST['descripcion'] ?? '';
             $precio = $_POST['precio'] ?? 0;
-            $stock = $_POST['stock'] ?? 0;
+            $id_categoria = $_POST['categoria'] ?? null;
 
             // Obtener información actual del producto
             $producto = $this->db->query("SELECT imagen_nombre FROM producto WHERE id = ?", [$id])->fetch();
@@ -129,7 +135,6 @@ class ProductoController {
             $imagenInfo = null;
             if (isset($_FILES['imagen']) && $_FILES['imagen']['error'] !== UPLOAD_ERR_NO_FILE) {
                 $imagenInfo = $this->handleImageUpload($_FILES['imagen']);
-                
                 // Eliminar imagen anterior si existe
                 if ($imagenInfo && $producto && $producto['imagen_nombre']) {
                     $imagenAnterior = $this->uploadDir . $producto['imagen_nombre'];
@@ -140,20 +145,26 @@ class ProductoController {
             }
 
             if ($imagenInfo) {
-                $sql = "UPDATE producto SET nombre = ?, descripcion = ?, precio = ?, stock = ?, 
-                        imagen_url = ?, imagen_nombre = ?, imagen_tipo = ? WHERE id = ?";
+                $sql = "UPDATE producto SET nombre = ?, descripcion = ?, precio = ?, id_categoria = ?, imagen_url = ?, imagen_nombre = ?, imagen_tipo = ? WHERE id = ?";
                 $params = [
-                    $nombre, $descripcion, $precio, $stock,
+                    $nombre, $descripcion, $precio, $id_categoria,
                     $imagenInfo['url'], $imagenInfo['nombre'], $imagenInfo['tipo'],
                     $id
                 ];
             } else {
-                $sql = "UPDATE producto SET nombre = ?, descripcion = ?, precio = ?, stock = ? WHERE id = ?";
-                $params = [$nombre, $descripcion, $precio, $stock, $id];
+                $sql = "UPDATE producto SET nombre = ?, descripcion = ?, precio = ?, id_categoria = ? WHERE id = ?";
+                $params = [$nombre, $descripcion, $precio, $id_categoria, $id];
+            }
+            $this->db->query($sql, $params);
+
+            // Actualizar stock por talla: eliminar y volver a insertar
+            $this->db->query("DELETE FROM producto_talla WHERE id_producto = ?", [$id]);
+            if (isset($_POST['stock_talla'])) {
+                foreach ($_POST['stock_talla'] as $id_talla => $stock) {
+                    $this->db->query("INSERT INTO producto_talla (id_producto, id_talla, stock) VALUES (?, ?, ?)", [$id, $id_talla, $stock]);
+                }
             }
 
-            $this->db->query($sql, $params);
-            
             header('Content-Type: application/json');
             echo json_encode(['success' => true]);
         } catch (\Exception $e) {
@@ -368,5 +379,84 @@ class ProductoController {
         // Obtener productos SNKRS especiales
         $productos = $this->productoService->obtenerProductosSnkrs();
         require_once __DIR__ . '/../Views/productos/snkrs.php';
+    }
+
+    public function carrito() {
+        require_once __DIR__ . '/../Views/productos/carrito.php';
+    }
+
+    public function obtenerTallas() {
+        header('Content-Type: application/json');
+        try {
+            $tallas = $this->productoService->obtenerTodasLasTallas();
+            echo json_encode(['success' => true, 'tallas' => $tallas]);
+        } catch (\Exception $e) {
+            echo json_encode(['success' => false, 'error' => $e->getMessage()]);
+        }
+    }
+
+    public function obtenerCategorias() {
+        header('Content-Type: application/json');
+        try {
+            $categorias = $this->productoService->obtenerTodasLasCategorias();
+            echo json_encode(['success' => true, 'categorias' => $categorias]);
+        } catch (\Exception $e) {
+            echo json_encode(['success' => false, 'error' => $e->getMessage()]);
+        }
+    }
+
+    public function detalleProducto($id) {
+        header('Content-Type: application/json');
+        try {
+            $producto = $this->db->query("SELECT * FROM producto WHERE id = ?", [$id])->fetch();
+            if (!$producto) {
+                echo json_encode(['success' => false, 'error' => 'Producto no encontrado']);
+                return;
+            }
+            // Obtener tallas y stock
+            $tallas = $this->db->query(
+                "SELECT t.id, t.talla, pt.stock FROM producto_talla pt JOIN talla t ON pt.id_talla = t.id WHERE pt.id_producto = ? ORDER BY t.talla ASC",
+                [$id]
+            )->fetchAll();
+            $producto['tallas'] = $tallas;
+            echo json_encode(['success' => true, 'producto' => $producto]);
+        } catch (\Exception $e) {
+            echo json_encode(['success' => false, 'error' => $e->getMessage()]);
+        }
+    }
+
+    public function agregarAlCarrito() {
+        header('Content-Type: application/json');
+        session_start();
+        try {
+            $id_producto = $_POST['id_producto'] ?? null;
+            $id_talla = $_POST['id_talla'] ?? null;
+            $cantidad = $_POST['cantidad'] ?? 1;
+            if (!$id_producto || !$id_talla) {
+                echo json_encode(['success' => false, 'error' => 'Faltan datos']);
+                return;
+            }
+            // Validar stock
+            $row = $this->db->query("SELECT stock FROM producto_talla WHERE id_producto = ? AND id_talla = ?", [$id_producto, $id_talla])->fetch();
+            if (!$row || $row['stock'] < $cantidad) {
+                echo json_encode(['success' => false, 'error' => 'Stock insuficiente']);
+                return;
+            }
+            // Guardar en sesión
+            if (!isset($_SESSION['carrito'])) $_SESSION['carrito'] = [];
+            $key = $id_producto . '-' . $id_talla;
+            if (isset($_SESSION['carrito'][$key])) {
+                $_SESSION['carrito'][$key]['cantidad'] += $cantidad;
+            } else {
+                $_SESSION['carrito'][$key] = [
+                    'id_producto' => $id_producto,
+                    'id_talla' => $id_talla,
+                    'cantidad' => $cantidad
+                ];
+            }
+            echo json_encode(['success' => true]);
+        } catch (\Exception $e) {
+            echo json_encode(['success' => false, 'error' => $e->getMessage()]);
+        }
     }
 } 

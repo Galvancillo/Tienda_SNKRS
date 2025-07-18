@@ -45,6 +45,7 @@
             min-height: 100%;
             display: flex;
             flex-direction: column;
+            padding-bottom: 70px; /* espacio para el footer */
         }
 
         /* Contenedor de la tabla */
@@ -63,10 +64,11 @@
             color: white;
             text-align: center;
             padding: 15px;
-            position: relative;
+            position: fixed;
+            left: 0;
             bottom: 0;
             width: 100%;
-            margin-top: auto;
+            z-index: 100;
         }
 
         /* Modal */
@@ -286,8 +288,13 @@
                     <input type="number" id="precio" name="precio" step="0.01" required>
                 </div>
                 <div class="form-group">
-                    <label for="stock">Stock</label>
-                    <input type="number" id="stock" name="stock" required>
+                    <label for="categoria">Categoría</label>
+                    <select id="categoria" name="categoria" required></select>
+                </div>
+                <div class="form-group">
+                    <label>Stock por Talla</label>
+                    <div id="tallasContainer" style="display: flex; flex-wrap: wrap; gap: 10px;"></div>
+                    <small>Ingresa el stock para cada talla disponible</small>
                 </div>
                 <div class="form-group">
                     <label for="imagen">Imagen</label>
@@ -362,12 +369,47 @@
             }
         };
 
-        // Función para mostrar el formulario de producto
+        // Cargar categorías y tallas al abrir el modal
+        function cargarCategoriasYTallas() {
+            // Cargar categorías
+            fetch('/Tienda_SNKRS/public/admin/productos/categorias')
+                .then(res => res.json())
+                .then(data => {
+                    const select = document.getElementById('categoria');
+                    select.innerHTML = '';
+                    if (data.success) {
+                        data.categorias.forEach(cat => {
+                            const option = document.createElement('option');
+                            option.value = cat.id;
+                            option.textContent = cat.nombre;
+                            select.appendChild(option);
+                        });
+                    }
+                });
+            // Cargar tallas
+            fetch('/Tienda_SNKRS/public/admin/productos/tallas')
+                .then(res => res.json())
+                .then(data => {
+                    const container = document.getElementById('tallasContainer');
+                    container.innerHTML = '';
+                    if (data.success) {
+                        data.tallas.forEach(talla => {
+                            const div = document.createElement('div');
+                            div.style.display = 'flex';
+                            div.style.alignItems = 'center';
+                            div.innerHTML = `<label style='margin-right:4px;'>${talla.talla}</label><input type='number' min='0' name='stock_talla[${talla.id}]' style='width:60px;' value='0'>`;
+                            container.appendChild(div);
+                        });
+                    }
+                });
+        }
+        // Mostrar modal y cargar datos
         function mostrarFormularioProducto() {
             document.getElementById('modalTitle').textContent = 'Agregar Producto';
             document.getElementById('productoForm').reset();
             document.getElementById('productoId').value = '';
             document.getElementById('imagenPreview').style.display = 'none';
+            cargarCategoriasYTallas();
             document.getElementById('productoModal').style.display = 'block';
         }
 
@@ -388,8 +430,21 @@
                     document.getElementById('nombre').value = producto.nombre;
                     document.getElementById('descripcion').value = producto.descripcion;
                     document.getElementById('precio').value = producto.precio;
-                    document.getElementById('stock').value = producto.stock;
+                    document.getElementById('categoria').value = producto.categoria_id; // Asignar categoría
                     
+                    // Asignar stocks por talla
+                    const tallasContainer = document.getElementById('tallasContainer');
+                    tallasContainer.innerHTML = ''; // Limpiar antes de cargar
+                    if (producto.stocks_por_talla) {
+                        producto.stocks_por_talla.forEach(stock => {
+                            const div = document.createElement('div');
+                            div.style.display = 'flex';
+                            div.style.alignItems = 'center';
+                            div.innerHTML = `<label style='margin-right:4px;'>${stock.talla.talla}</label><input type='number' min='0' name='stock_talla[${stock.talla.id}]' style='width:60px;' value='${stock.stock}'>`;
+                            tallasContainer.appendChild(div);
+                        });
+                    }
+
                     // Mostrar imagen actual si existe
                     if (producto.imagen_url) {
                         document.getElementById('previewImg').src = producto.imagen_url;
@@ -471,6 +526,10 @@
         document.getElementById('productoForm').onsubmit = function(e) {
             e.preventDefault();
             const formData = new FormData(this);
+            // Agregar manualmente los stocks por talla
+            document.querySelectorAll('#tallasContainer input').forEach(input => {
+                formData.append(input.name, input.value);
+            });
             const id = document.getElementById('productoId').value;
             const url = id ? 
                 `/Tienda_SNKRS/public/admin/productos/editar/${id}` : 

@@ -91,12 +91,17 @@ class Router {
         $this->add('GET', '/productos/ofertas', 'App\Controllers\ProductoController', 'ofertas');
         $this->add('GET', '/productos/snkrs', 'App\Controllers\ProductoController', 'snkrs');
         $this->add('GET', '/productos/nuevo', 'App\Controllers\ProductoController', 'nuevo');
+        $this->add('GET', '/productos/carrito', 'App\\Controllers\\ProductoController', 'carrito');
+        $this->add('GET', '/productos/detalle/{id}', 'App\\Controllers\\ProductoController', 'detalleProducto');
+        $this->add('POST', '/productos/agregar-al-carrito', 'App\\Controllers\\ProductoController', 'agregarAlCarrito');
 
         // Rutas del panel de administrador
         $this->add('GET', '/admin', 'App\Controllers\AdminController', 'index');
         $this->add('GET', '/admin/productos', 'App\Controllers\AdminController', 'productos');
         $this->add('GET', '/admin/usuarios', 'App\Controllers\AdminController', 'usuarios');
         $this->add('GET', '/admin/pedidos', 'App\Controllers\AdminController', 'pedidos');
+        $this->add('GET', '/admin/productos/tallas', 'App\\Controllers\\ProductoController', 'obtenerTallas');
+        $this->add('GET', '/admin/productos/categorias', 'App\\Controllers\\ProductoController', 'obtenerCategorias');
 
         // Rutas de API para productos
         $this->add('GET', '/admin/productos/obtener/{id}', 'App\Controllers\ProductoController', 'obtenerProducto');

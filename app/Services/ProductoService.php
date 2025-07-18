@@ -23,7 +23,7 @@ class ProductoService {
         $sql = "SELECT p.*, c.nombre as categoria 
                 FROM producto p 
                 LEFT JOIN categoria c ON p.id_categoria = c.id 
-                WHERE c.nombre = 'Hombre'";
+                WHERE c.nombre = 'Hombre' OR FIND_IN_SET(c.id, p.categorias_referencia) > 0";
         return $this->db->query($sql)->fetchAll();
     }
 
@@ -31,7 +31,7 @@ class ProductoService {
         $sql = "SELECT p.*, c.nombre as categoria 
                 FROM producto p 
                 LEFT JOIN categoria c ON p.id_categoria = c.id 
-                WHERE c.nombre = 'Mujer'";
+                WHERE c.nombre = 'Mujer' OR FIND_IN_SET(c.id, p.categorias_referencia) > 0";
         return $this->db->query($sql)->fetchAll();
     }
 
@@ -39,16 +39,15 @@ class ProductoService {
         $sql = "SELECT p.*, c.nombre as categoria 
                 FROM producto p 
                 LEFT JOIN categoria c ON p.id_categoria = c.id 
-                WHERE c.nombre = 'Niños'";
+                WHERE c.nombre = 'Niños' OR FIND_IN_SET(c.id, p.categorias_referencia) > 0";
         return $this->db->query($sql)->fetchAll();
     }
 
     public function obtenerProductosOfertas() {
-        // Aquí podrías agregar lógica para productos en oferta
         $sql = "SELECT p.*, c.nombre as categoria 
                 FROM producto p 
                 LEFT JOIN categoria c ON p.id_categoria = c.id 
-                WHERE p.precio < (SELECT AVG(precio) FROM producto)";
+                WHERE (p.precio < (SELECT AVG(precio) FROM producto)) OR FIND_IN_SET(c.id, p.categorias_referencia) > 0";
         return $this->db->query($sql)->fetchAll();
     }
 
@@ -56,7 +55,17 @@ class ProductoService {
         $sql = "SELECT p.*, c.nombre as categoria 
                 FROM producto p 
                 LEFT JOIN categoria c ON p.id_categoria = c.id 
-                WHERE c.nombre = 'SNKRS'";
+                WHERE c.nombre = 'SNKRS' OR FIND_IN_SET(c.id, p.categorias_referencia) > 0";
+        return $this->db->query($sql)->fetchAll();
+    }
+
+    public function obtenerTodasLasTallas() {
+        $sql = "SELECT * FROM talla ORDER BY talla ASC";
+        return $this->db->query($sql)->fetchAll();
+    }
+
+    public function obtenerTodasLasCategorias() {
+        $sql = "SELECT * FROM categoria ORDER BY nombre ASC";
         return $this->db->query($sql)->fetchAll();
     }
 } 
