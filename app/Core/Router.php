@@ -35,10 +35,16 @@ class Router {
         }
 
         foreach ($this->routes as $route) {
-            if ($route['method'] === $method && $this->matchPath($route['path'], $uri)) {
+            if ($route['method'] === $method && $this->matchPath($route['path'], $uri, $params)) {
                 $controller = new $route['controller']();
                 $action = $route['action'];
-                return $controller->$action();
+                
+                // Pasar parámetros al método del controlador
+                if (!empty($params)) {
+                    return call_user_func_array([$controller, $action], $params);
+                } else {
+                    return $controller->$action();
+                }
             }
         }
         
@@ -51,13 +57,23 @@ class Router {
         }
     }
 
-    private function matchPath($routePath, $uri) {
+    private function matchPath($routePath, $uri, &$params = []) {
+        // Extraer nombres de parámetros de la ruta
+        preg_match_all('/\{([^}]+)\}/', $routePath, $paramNames);
+        $paramNames = $paramNames[1];
+        
         // Convertir parámetros de ruta en expresiones regulares
         $pattern = preg_replace('/\{([^}]+)\}/', '([^/]+)', $routePath);
         $pattern = str_replace('/', '\/', $pattern);
         $pattern = '/^' . $pattern . '$/';
         
-        return preg_match($pattern, $uri);
+        if (preg_match($pattern, $uri, $matches)) {
+            // Extraer los valores de los parámetros
+            $params = array_slice($matches, 1);
+            return true;
+        }
+        
+        return false;
     }
 
     public function init() {
@@ -82,15 +98,19 @@ class Router {
         $this->add('GET', '/admin/usuarios', 'App\Controllers\AdminController', 'usuarios');
         $this->add('GET', '/admin/pedidos', 'App\Controllers\AdminController', 'pedidos');
 
-        // Rutas de API para el panel de administrador
-        $this->add('POST', '/admin/productos/crear', 'App\Controllers\AdminController', 'crearProducto');
-        $this->add('POST', '/admin/productos/editar/{id}', 'App\Controllers\AdminController', 'editarProducto');
-        $this->add('POST', '/admin/productos/eliminar/{id}', 'App\Controllers\AdminController', 'eliminarProducto');
+        // Rutas de API para productos
+        $this->add('GET', '/admin/productos/obtener/{id}', 'App\Controllers\ProductoController', 'obtenerProducto');
+        $this->add('POST', '/admin/productos/crear', 'App\Controllers\ProductoController', 'crearProducto');
+        $this->add('POST', '/admin/productos/editar/{id}', 'App\Controllers\ProductoController', 'editarProducto');
+        $this->add('POST', '/admin/productos/eliminar/{id}', 'App\Controllers\ProductoController', 'eliminarProducto');
+        $this->add('POST', '/admin/productos/reducir-stock/{id}', 'App\Controllers\ProductoController', 'reducirStock');
         
+        // Rutas de API para usuarios
         $this->add('POST', '/admin/usuarios/crear', 'App\Controllers\AdminController', 'crearUsuario');
         $this->add('POST', '/admin/usuarios/editar/{id}', 'App\Controllers\AdminController', 'editarUsuario');
         $this->add('POST', '/admin/usuarios/eliminar/{id}', 'App\Controllers\AdminController', 'eliminarUsuario');
         
+        // Rutas de API para pedidos
         $this->add('POST', '/admin/pedidos/actualizar/{id}', 'App\Controllers\AdminController', 'actualizarPedido');
         $this->add('POST', '/admin/pedidos/eliminar/{id}', 'App\Controllers\AdminController', 'eliminarPedido');
     }

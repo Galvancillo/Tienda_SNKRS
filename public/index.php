@@ -1,5 +1,8 @@
 <?php
 
+// Incluir configuración de errores
+require_once __DIR__ . '/../config/error_config.php';
+
 // Iniciar sesión al principio de la aplicación
 if (session_status() === PHP_SESSION_NONE) {
     session_start();

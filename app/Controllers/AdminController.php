@@ -87,19 +87,6 @@ class AdminController {
         }
     }
 
-    public function eliminarProducto($id) {
-        try {
-            $sql = "DELETE FROM producto WHERE id = ?";
-            $this->db->query($sql, [$id]);
-            
-            header('Content-Type: application/json');
-            echo json_encode(['success' => true]);
-        } catch (\Exception $e) {
-            header('Content-Type: application/json');
-            echo json_encode(['success' => false, 'error' => $e->getMessage()]);
-        }
-    }
-
     // Métodos CRUD para usuarios
     public function crearUsuario() {
         try {

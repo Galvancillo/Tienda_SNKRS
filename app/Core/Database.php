@@ -9,6 +9,7 @@ class Database {
     private $connection;
     private $config;
     private static $instance = null;
+    private $inTransaction = false;
 
     public function __construct() {
         $this->config = require __DIR__ . '/../../config/config.php';
@@ -106,14 +107,27 @@ class Database {
     }
 
     public function beginTransaction() {
-        return $this->connection->beginTransaction();
+        if (!$this->inTransaction) {
+            $this->connection->beginTransaction();
+            $this->inTransaction = true;
+        }
     }
 
     public function commit() {
-        return $this->connection->commit();
+        if ($this->inTransaction) {
+            $this->connection->commit();
+            $this->inTransaction = false;
+        }
     }
 
     public function rollBack() {
-        return $this->connection->rollBack();
+        if ($this->inTransaction) {
+            $this->connection->rollBack();
+            $this->inTransaction = false;
+        }
+    }
+
+    public function isInTransaction() {
+        return $this->inTransaction;
     }
 } 

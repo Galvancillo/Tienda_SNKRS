@@ -53,7 +53,7 @@
       </div>
     </section>
 
-    <footer class="login-footer">
+    <footer>
         <p>© 2025 SNKRS, Inc. Todos los derechos reservados.</p>
     </footer>
 </body>

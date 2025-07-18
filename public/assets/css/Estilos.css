@@ -7,6 +7,23 @@ body {
   flex-direction: column;
 }
 
+/* Estilos del footer */
+footer {
+  margin-top: auto;
+  background-color: #f8f9fa;
+  padding: 1rem;
+  text-align: center;
+  border-top: 1px solid #dee2e6;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+footer p {
+  margin: 0;
+  color: #6c757d;
+  font-size: 0.9rem;
+}
+
 .navbar {
   position: fixed;
   top: 0;
