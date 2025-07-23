@@ -69,6 +69,66 @@ class CarritoController {
             exit();
         }
         $usuario_id = $_SESSION['usuario_id'];
+
+        // Procesar eliminación parcial de producto
+        if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_GET['eliminar'], $_POST['cantidad_eliminar'])) {
+            $detalle_id = intval($_GET['eliminar']);
+            $cantidad_eliminar = intval($_POST['cantidad_eliminar']);
+            // Obtener cantidad actual
+            $stmt = $this->db->prepare('SELECT cantidad FROM detallecarrito WHERE id = ?');
+            $stmt->execute([$detalle_id]);
+            $detalle = $stmt->fetch();
+            if ($detalle) {
+                $nueva_cantidad = $detalle['cantidad'] - $cantidad_eliminar;
+                if ($nueva_cantidad > 0) {
+                    $stmt = $this->db->prepare('UPDATE detallecarrito SET cantidad = ? WHERE id = ?');
+                    $stmt->execute([$nueva_cantidad, $detalle_id]);
+                } else {
+                    $stmt = $this->db->prepare('DELETE FROM detallecarrito WHERE id = ?');
+                    $stmt->execute([$detalle_id]);
+                }
+            }
+            // Redirigir para evitar reenvío de formulario
+            header('Location: /Tienda_SNKRS/public/productos/carrito');
+            exit();
+        }
+
+        // Procesar sumar/restar cantidad
+        if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['cantidad_cambio'])) {
+            if (isset($_GET['sumar'])) {
+                $detalle_id = intval($_GET['sumar']);
+                $cambio = intval($_POST['cantidad_cambio']);
+                $stmt = $this->db->prepare('SELECT cantidad FROM detallecarrito WHERE id = ?');
+                $stmt->execute([$detalle_id]);
+                $detalle = $stmt->fetch();
+                if ($detalle) {
+                    $nueva_cantidad = $detalle['cantidad'] + $cambio;
+                    $stmt = $this->db->prepare('UPDATE detallecarrito SET cantidad = ? WHERE id = ?');
+                    $stmt->execute([$nueva_cantidad, $detalle_id]);
+                }
+                header('Location: /Tienda_SNKRS/public/productos/carrito');
+                exit();
+            } elseif (isset($_GET['restar'])) {
+                $detalle_id = intval($_GET['restar']);
+                $cambio = intval($_POST['cantidad_cambio']);
+                $stmt = $this->db->prepare('SELECT cantidad FROM detallecarrito WHERE id = ?');
+                $stmt->execute([$detalle_id]);
+                $detalle = $stmt->fetch();
+                if ($detalle) {
+                    $nueva_cantidad = $detalle['cantidad'] + $cambio;
+                    if ($nueva_cantidad > 0) {
+                        $stmt = $this->db->prepare('UPDATE detallecarrito SET cantidad = ? WHERE id = ?');
+                        $stmt->execute([$nueva_cantidad, $detalle_id]);
+                    } else {
+                        $stmt = $this->db->prepare('DELETE FROM detallecarrito WHERE id = ?');
+                        $stmt->execute([$detalle_id]);
+                    }
+                }
+                header('Location: /Tienda_SNKRS/public/productos/carrito');
+                exit();
+            }
+        }
+
         // Buscar carrito activo
         $stmt = $this->db->prepare('SELECT id FROM carrito WHERE id_usuario = ? AND activo = 1 LIMIT 1');
         $stmt->execute([$usuario_id]);
