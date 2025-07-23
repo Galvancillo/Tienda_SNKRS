@@ -56,7 +56,16 @@ class AdminController {
             $nombre = $_POST['nombre'] ?? '';
             $descripcion = $_POST['descripcion'] ?? '';
             $precio = $_POST['precio'] ?? 0;
-            $stock = $_POST['stock'] ?? 0;
+
+            // Calcular stock total sumando los valores de stock_talla
+            $stock = 0;
+            if (isset($_POST['stock_talla']) && is_array($_POST['stock_talla'])) {
+                foreach ($_POST['stock_talla'] as $valor) {
+                    if (is_numeric($valor)) {
+                        $stock += (int)$valor;
+                    }
+                }
+            }
 
             $sql = "INSERT INTO producto (nombre, descripcion, precio, stock) VALUES (?, ?, ?, ?)";
             $this->db->query($sql, [$nombre, $descripcion, $precio, $stock]);
@@ -74,7 +83,16 @@ class AdminController {
             $nombre = $_POST['nombre'] ?? '';
             $descripcion = $_POST['descripcion'] ?? '';
             $precio = $_POST['precio'] ?? 0;
-            $stock = $_POST['stock'] ?? 0;
+
+            // Calcular stock total sumando los valores de stock_talla
+            $stock = 0;
+            if (isset($_POST['stock_talla']) && is_array($_POST['stock_talla'])) {
+                foreach ($_POST['stock_talla'] as $valor) {
+                    if (is_numeric($valor)) {
+                        $stock += (int)$valor;
+                    }
+                }
+            }
 
             $sql = "UPDATE producto SET nombre = ?, descripcion = ?, precio = ?, stock = ? WHERE id = ?";
             $this->db->query($sql, [$nombre, $descripcion, $precio, $stock, $id]);

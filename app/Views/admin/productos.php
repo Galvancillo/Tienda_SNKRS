@@ -433,6 +433,7 @@
                     document.getElementById('nombre').value = producto.nombre;
                     document.getElementById('descripcion').value = producto.descripcion;
                     document.getElementById('precio').value = producto.precio;
+                    document.getElementById('stock').value = producto.stock;
                     document.getElementById('categoria').value = producto.categoria_id; // Asignar categoría
                     
                     // Asignar stocks por talla
