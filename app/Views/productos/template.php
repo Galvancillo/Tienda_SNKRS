@@ -37,9 +37,9 @@
                     </div>
                     <a href="/Tienda_SNKRS/public/productos/carrito" class="icon" title="Ver carrito">🛒</a>
                     <?php if (isset($_SESSION['user_id'])): ?>
-                        <a href="/Tienda_SNKRS/public/logout" class="login-btn">Cerrar Sesión</a>
+                        <a href="/Tienda_SNKRS/public/usuario/perfil" class="icon" title="Editar Perfil">👤</a>
                     <?php else: ?>
-                        <a href="/Tienda_SNKRS/public/login" class="login-btn">Iniciar Sesión</a>
+                        <a href="/Tienda_SNKRS/public/login" class="icon" title="Iniciar Sesión">👤</a>
                     <?php endif; ?>
                 </div>
             </div>
@@ -47,6 +47,11 @@
 
         <main class="productos-container">
             <h1 class="categoria-titulo"><?php echo $titulo ?? 'Productos'; ?></h1>
+            <?php if (isset($_SESSION['user_id'])): ?>
+                <p style="text-align:center; color:green;">Bienvenido, <?php echo htmlspecialchars($_SESSION['nombre']); ?>.</p>
+            <?php else: ?>
+                <p style="text-align:center; color:#c00;">No has iniciado sesión.</p>
+            <?php endif; ?>
             <?php if (isset($esCarrito) && $esCarrito): ?>
                 <div style="display: flex; justify-content: space-between; align-items: flex-start; min-height: 350px;">
                     <div style="flex: 1; padding: 40px;">

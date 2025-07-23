@@ -160,6 +160,13 @@ footer p {
   background: #0056b3;
 }
 
+/* Quitar subrayado y mejorar apariencia de los iconos de usuario y carrito */
+a.icon {
+    text-decoration: none !important;
+    font-size: 1.7em;
+    vertical-align: middle;
+}
+
 @media (max-width: 1300px) {
   .navbar-content {
     max-width: 1000px;

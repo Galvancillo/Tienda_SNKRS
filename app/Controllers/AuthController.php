@@ -56,7 +56,7 @@ class AuthController {
                 if ($user['rol'] === 'admin') {
                     header('Location: /Tienda_SNKRS/public/admin');
                 } else {
-                    header('Location: /Tienda_SNKRS/public/');
+                    header('Location: /Tienda_SNKRS/public/productos/nuevo');
                 }
                 exit();
             } else {

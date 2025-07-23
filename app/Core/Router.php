@@ -118,5 +118,9 @@ class Router {
         // Rutas de API para pedidos
         $this->add('POST', '/admin/pedidos/actualizar/{id}', 'App\Controllers\AdminController', 'actualizarPedido');
         $this->add('POST', '/admin/pedidos/eliminar/{id}', 'App\Controllers\AdminController', 'eliminarPedido');
+
+        // Rutas de perfil de usuario
+        $this->add('GET', '/usuario/perfil', 'App\\Controllers\\UsuarioController', 'perfil');
+        $this->add('POST', '/usuario/actualizar', 'App\\Controllers\\UsuarioController', 'actualizarPerfil');
     }
 } 

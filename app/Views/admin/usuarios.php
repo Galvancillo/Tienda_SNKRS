@@ -33,7 +33,11 @@
                         <a href="/Tienda_SNKRS/public/admin/pedidos"><i class="fas fa-shopping-cart"></i> Pedidos</a>
                     </li>
                     <li>
-                        <a href="/Tienda_SNKRS/public/logout"><i class="fas fa-sign-out-alt"></i> Cerrar Sesión</a>
+                        <?php if (isset($_SESSION['user_id'])): ?>
+                            <a href="/Tienda_SNKRS/public/usuario/perfil" class="icon" title="Editar Perfil">👤</a>
+                        <?php else: ?>
+                            <a href="/Tienda_SNKRS/public/login" class="icon" title="Iniciar Sesión">👤</a>
+                        <?php endif; ?>
                     </li>
                 </ul>
             </nav>
