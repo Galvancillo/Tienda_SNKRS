@@ -17,7 +17,12 @@ class UsuarioController {
 
     public function perfil() {
         $id = $_SESSION['user_id'];
+        // Obtener datos del usuario
         $usuario = $this->db->query("SELECT id, nombre, correo FROM usuario WHERE id = ?", [$id])->fetch();
+        // Obtener direcciones de envío
+        $direcciones = $this->db->query("SELECT * FROM direccionenvio WHERE id_usuario = ?", [$id])->fetchAll();
+        // Obtener historial de pedidos
+        $pedidos = $this->db->query("SELECT * FROM pedido WHERE id_usuario = ? ORDER BY fecha_pedido DESC", [$id])->fetchAll();
         require_once __DIR__ . '/../Views/usuario/perfil.php';
     }
 
