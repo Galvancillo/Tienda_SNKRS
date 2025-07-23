@@ -131,7 +131,7 @@
                         <input type="text" placeholder="Buscar">
                     </div>
                     <a href="/Tienda_SNKRS/public/productos/carrito" class="icon" title="Ver carrito">🛒</a>
-                    <?php if (isset($_SESSION['user_id'])): ?>
+                    <?php if (isset($_SESSION['usuario_id'])): ?>
                         <a href="/Tienda_SNKRS/public/usuario/perfil" class="icon" title="Editar Perfil">👤</a>
                     <?php else: ?>
                         <a href="/Tienda_SNKRS/public/login" class="icon" title="Iniciar Sesión">👤</a>

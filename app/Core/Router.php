@@ -91,9 +91,11 @@ class Router {
         $this->add('GET', '/productos/ofertas', 'App\Controllers\ProductoController', 'ofertas');
         $this->add('GET', '/productos/snkrs', 'App\Controllers\ProductoController', 'snkrs');
         $this->add('GET', '/productos/nuevo', 'App\Controllers\ProductoController', 'nuevo');
-        $this->add('GET', '/productos/carrito', 'App\\Controllers\\ProductoController', 'carrito');
+        $this->add('GET', '/productos/carrito', 'App\\Controllers\\CarritoController', 'ver');
         $this->add('GET', '/productos/detalle/{id}', 'App\\Controllers\\ProductoController', 'detalleProducto');
         $this->add('POST', '/productos/agregar-al-carrito', 'App\\Controllers\\ProductoController', 'agregarAlCarrito');
+        // Ruta para agregar al carrito
+        $this->add('POST', '/carrito/agregar', 'App\\Controllers\\CarritoController', 'agregar');
 
         // Rutas del panel de administrador
         $this->add('GET', '/admin', 'App\Controllers\AdminController', 'index');

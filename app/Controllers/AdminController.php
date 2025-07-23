@@ -9,7 +9,7 @@ class AdminController {
 
     public function __construct() {
         // Verificar si el usuario está autenticado y es administrador
-        if (!isset($_SESSION['user_id']) || $_SESSION['role'] !== 'admin') {
+        if (!isset($_SESSION['usuario_id']) || $_SESSION['role'] !== 'admin') {
             header('Location: /Tienda_SNKRS/public/login');
             exit();
         }

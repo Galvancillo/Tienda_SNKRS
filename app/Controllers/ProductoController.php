@@ -445,9 +445,9 @@ class ProductoController {
                 echo json_encode(['success' => false, 'error' => 'Producto no encontrado']);
                 return;
             }
-            // Obtener tallas y stock
+            // Obtener tallas y stock, incluyendo el id de producto_talla
             $tallas = $this->db->query(
-                "SELECT t.id, t.talla, pt.stock FROM producto_talla pt JOIN talla t ON pt.id_talla = t.id WHERE pt.id_producto = ? ORDER BY t.talla ASC",
+                "SELECT pt.id as producto_talla_id, t.id as talla_id, t.talla, pt.stock FROM producto_talla pt JOIN talla t ON pt.id_talla = t.id WHERE pt.id_producto = ? ORDER BY t.talla ASC",
                 [$id]
             )->fetchAll();
             $producto['tallas'] = $tallas;

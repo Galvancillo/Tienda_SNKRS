@@ -36,7 +36,7 @@
                         <input type="text" placeholder="Buscar">
                     </div>
                     <a href="/Tienda_SNKRS/public/productos/carrito" class="icon" title="Ver carrito">🛒</a>
-                    <?php if (isset($_SESSION['user_id'])): ?>
+                    <?php if (isset($_SESSION['usuario_id'])): ?>
                         <a href="/Tienda_SNKRS/public/usuario/perfil" class="icon" title="Editar Perfil">👤</a>
                     <?php else: ?>
                         <a href="/Tienda_SNKRS/public/login" class="icon" title="Iniciar Sesión">👤</a>
@@ -47,7 +47,7 @@
 
         <main class="productos-container">
             <h1 class="categoria-titulo"><?php echo $titulo ?? 'Productos'; ?></h1>
-            <?php if (isset($_SESSION['user_id'])): ?>
+            <?php if (isset($_SESSION['usuario_id'])): ?>
                 <p style="text-align:center; color:green;">Bienvenido, <?php echo htmlspecialchars($_SESSION['nombre']); ?>.</p>
             <?php else: ?>
                 <p style="text-align:center; color:#c00;">No has iniciado sesión.</p>
@@ -120,7 +120,7 @@
                     tallasHtml = '<label for="modalTalla">Talla:</label> <select id="modalTalla">';
                     p.tallas.forEach(t => {
                         if (t.stock > 0) {
-                            tallasHtml += `<option value="${t.id}">${t.talla} (${t.stock} disponibles)</option>`;
+                            tallasHtml += `<option value="${t.producto_talla_id}">${t.talla} (${t.stock} disponibles)</option>`;
                         }
                     });
                     tallasHtml += '</select>';
@@ -147,18 +147,23 @@
                 document.getElementById('btnAgregarAlCarrito').onclick = function() {
                     const id_talla = document.getElementById('modalTalla') ? document.getElementById('modalTalla').value : null;
                     const cantidad = document.getElementById('modalCantidad').value;
-                    fetch('/Tienda_SNKRS/public/productos/agregar-al-carrito', {
+                    // Cambiar a la nueva ruta y formato
+                    fetch('/Tienda_SNKRS/public/carrito/agregar', {
                         method: 'POST',
                         headers: { 'X-Requested-With': 'XMLHttpRequest', 'Content-Type': 'application/x-www-form-urlencoded' },
-                        body: `id_producto=${encodeURIComponent(p.id)}&id_talla=${encodeURIComponent(id_talla)}&cantidad=${encodeURIComponent(cantidad)}`
+                        body: `producto_talla_id=${encodeURIComponent(id_talla)}&cantidad=${encodeURIComponent(cantidad)}`
                     })
-                    .then(res => res.json())
-                    .then(resp => {
-                        if (resp.success) {
+                    .then(res => {
+                        if (res.ok) {
                             alert('Producto agregado al carrito');
                             document.getElementById('modalProducto').style.display = 'none';
+                        } else if (res.status === 400) {
+                            alert('Datos incompletos o error al agregar al carrito');
+                        } else if (res.status === 302) {
+                            // Redirección a login
+                            window.location.href = '/Tienda_SNKRS/public/login.php';
                         } else {
-                            alert(resp.error || 'Error al agregar al carrito');
+                            alert('Error al agregar al carrito');
                         }
                     });
                 };

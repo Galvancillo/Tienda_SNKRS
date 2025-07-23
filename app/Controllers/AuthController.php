@@ -47,7 +47,7 @@ class AuthController {
 
             if ($user && $user['contraseña'] === $password) { // Comparación directa por ahora
                 // Iniciar sesión
-                $_SESSION['user_id'] = $user['id'];
+                $_SESSION['usuario_id'] = $user['id'];
                 $_SESSION['email'] = $user['correo'];
                 $_SESSION['role'] = $user['rol'];
                 $_SESSION['nombre'] = $user['nombre'];

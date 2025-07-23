@@ -8,7 +8,7 @@ class UsuarioController {
     private $db;
 
     public function __construct() {
-        if (!isset($_SESSION['user_id'])) {
+        if (!isset($_SESSION['usuario_id'])) {
             header('Location: /Tienda_SNKRS/public/login');
             exit();
         }
@@ -16,7 +16,7 @@ class UsuarioController {
     }
 
     public function perfil() {
-        $id = $_SESSION['user_id'];
+        $id = $_SESSION['usuario_id'];
         // Obtener datos del usuario
         $usuario = $this->db->query("SELECT id, nombre, correo FROM usuario WHERE id = ?", [$id])->fetch();
         // Obtener direcciones de envío
@@ -27,7 +27,7 @@ class UsuarioController {
     }
 
     public function actualizarPerfil() {
-        $id = $_SESSION['user_id'];
+        $id = $_SESSION['usuario_id'];
         $nombre = $_POST['nombre'] ?? '';
         $correo = $_POST['correo'] ?? '';
         $contraseña = $_POST['contraseña'] ?? null;
