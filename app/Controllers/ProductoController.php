@@ -85,18 +85,29 @@ class ProductoController {
             $precio = $_POST['precio'] ?? 0;
             $id_categoria = $_POST['categoria'] ?? null;
 
+            // Calcular stock total sumando los valores de stock_talla
+            $stock = 0;
+            if (isset($_POST['stock_talla']) && is_array($_POST['stock_talla'])) {
+                foreach ($_POST['stock_talla'] as $valor) {
+                    if (is_numeric($valor)) {
+                        $stock += (int)$valor;
+                    }
+                }
+            }
+
             // Manejar la subida de imagen
             $imagenInfo = null;
             if (isset($_FILES['imagen']) && $_FILES['imagen']['error'] !== UPLOAD_ERR_NO_FILE) {
                 $imagenInfo = $this->handleImageUpload($_FILES['imagen']);
             }
 
-            $sql = "INSERT INTO producto (nombre, descripcion, precio, id_categoria, imagen_url, imagen_nombre, imagen_tipo) 
-                    VALUES (?, ?, ?, ?, ?, ?, ?)";
+            $sql = "INSERT INTO producto (nombre, descripcion, precio, stock, id_categoria, imagen_url, imagen_nombre, imagen_tipo) 
+                    VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
             $params = [
                 $nombre,
                 $descripcion,
                 $precio,
+                $stock, 
                 $id_categoria,
                 $imagenInfo ? $imagenInfo['url'] : null,
                 $imagenInfo ? $imagenInfo['nombre'] : null,
@@ -127,6 +138,16 @@ class ProductoController {
             $descripcion = $_POST['descripcion'] ?? '';
             $precio = $_POST['precio'] ?? 0;
             $id_categoria = $_POST['categoria'] ?? null;
+
+            // Calcular stock total sumando los valores de stock_talla
+            $stock = 0;
+            if (isset($_POST['stock_talla']) && is_array($_POST['stock_talla'])) {
+                foreach ($_POST['stock_talla'] as $valor) {
+                    if (is_numeric($valor)) {
+                        $stock += (int)$valor;
+                    }
+                }
+            }
 
             // Obtener información actual del producto
             $producto = $this->db->query("SELECT imagen_nombre FROM producto WHERE id = ?", [$id])->fetch();
