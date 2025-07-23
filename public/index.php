@@ -1,4 +1,5 @@
 <?php
+date_default_timezone_set('America/Mexico_City');
 
 // Incluir configuración de errores
 require_once __DIR__ . '/../config/error_config.php';

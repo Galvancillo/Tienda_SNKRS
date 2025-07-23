@@ -49,7 +49,7 @@
                 <h1>Gestión de Usuarios</h1>
                 <div class="user-info">
                     <span><?php echo htmlspecialchars($_SESSION['nombre'] ?? 'Administrador'); ?></span>
-                    <img src="https://via.placeholder.com/40" alt="Admin Avatar" class="avatar">
+                    <img src="/Tienda_SNKRS/public/assets/img/logo.png" alt="Admin Avatar" class="avatar">
                 </div>
             </header>
 

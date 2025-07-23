@@ -50,6 +50,42 @@ class AdminController {
         require_once __DIR__ . '/../Views/admin/pedidos.php';
     }
 
+    public function detallePedidoAjax($pedido_id) {
+        try {
+            $db = $this->db;
+            $pedido = $db->query("SELECT * FROM pedido WHERE id = ?", [$pedido_id])->fetch();
+            if (!$pedido) {
+                http_response_code(404);
+                echo "<div style='color:#c00;'>Pedido no encontrado.</div>";
+                exit;
+            }
+            $detalles = $db->query("SELECT dp.*, pt.id_producto, p.nombre, p.imagen_url, pt.id_talla, t.talla FROM detallepedido dp JOIN producto_talla pt ON dp.id_producto_talla = pt.id JOIN producto p ON pt.id_producto = p.id JOIN talla t ON pt.id_talla = t.id WHERE dp.id_pedido = ?", [$pedido_id])->fetchAll();
+            ob_start();
+            ?>
+            <div>
+                <div style="font-weight:bold; margin-bottom:8px;">Estado: <?= htmlspecialchars(ucfirst($pedido['estado'])) ?></div>
+                <?php foreach ($detalles as $item): ?>
+                    <div style="display:flex; align-items:center; gap:12px; margin-bottom:10px;">
+                        <img src="<?= htmlspecialchars($item['imagen_url']) ?>" alt="<?= htmlspecialchars($item['nombre']) ?>" style="width:48px; height:48px; object-fit:cover; border-radius:8px; border:1px solid #eee;">
+                        <div>
+                            <strong><?= htmlspecialchars($item['nombre']) ?></strong><br>
+                            Talla: <?= htmlspecialchars($item['talla']) ?> | Cantidad: <?= htmlspecialchars($item['cantidad']) ?><br>
+                            $<?= number_format($item['precio_unitario'], 2) ?> c/u
+                        </div>
+                    </div>
+                <?php endforeach; ?>
+                <div style="font-weight:bold; margin-top:10px;">Total: $<?= number_format($pedido['total'], 2) ?></div>
+            </div>
+            <?php
+            echo ob_get_clean();
+            exit;
+        } catch (\Exception $e) {
+            error_log('Error en detallePedidoAjax (admin): ' . $e->getMessage());
+            echo "<div style='color:#c00;'>Error al cargar detalles del pedido.</div>";
+            exit;
+        }
+    }
+
     // Métodos CRUD para productos
     public function crearProducto() {
         try {

@@ -304,7 +304,9 @@
                 <span>Total</span>
                 <span>$<?php echo number_format($total, 2); ?></span>
             </div>
-            <button class="carrito-finalizar" disabled>Finalizar compra</button>
+            <a href="/Tienda_SNKRS/public/usuario/checkout">
+                <button class="carrito-finalizar" type="button">Finalizar compra</button>
+            </a>
             <div style="text-align:center; color:#888; font-size:0.98rem; margin-top:8px;">(Funcionalidad próximamente)</div>
         </div>
     <?php else: ?>

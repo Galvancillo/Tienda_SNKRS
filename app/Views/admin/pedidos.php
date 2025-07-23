@@ -45,7 +45,7 @@
                 <h1>Gestión de Pedidos</h1>
                 <div class="user-info">
                     <span><?php echo htmlspecialchars($_SESSION['nombre'] ?? 'Administrador'); ?></span>
-                    <img src="https://via.placeholder.com/40" alt="Admin Avatar" class="avatar">
+                    <img src="/Tienda_SNKRS/public/assets/img/logo.png" alt="Admin Avatar" class="avatar">
                 </div>
             </header>
 
@@ -179,8 +179,16 @@
         }
 
         function verDetallesPedido(id) {
-            // Aquí deberías cargar los detalles del pedido desde el servidor
+            document.getElementById('detallesPedidoContenido').innerHTML = '<p>Cargando detalles...</p>';
             document.getElementById('detallesPedidoModal').style.display = 'block';
+            fetch('/Tienda_SNKRS/public/admin/pedidos/detalle/' + id)
+                .then(res => res.text())
+                .then(html => {
+                    document.getElementById('detallesPedidoContenido').innerHTML = html;
+                })
+                .catch(() => {
+                    document.getElementById('detallesPedidoContenido').innerHTML = '<p style="color:#c00;">Error al cargar detalles.</p>';
+                });
         }
 
         function eliminarPedido(id) {

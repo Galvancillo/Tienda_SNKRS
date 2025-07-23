@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <title>Mi Perfil - SNKRS</title>
     <link rel="stylesheet" href="/Tienda_SNKRS/public/assets/css/Estilos.css">
+    <link rel="icon" type="image/x-icon" href="/Tienda_SNKRS/public/assets/img/favicon.ico">
     <style>
         .perfil-main-container {
             max-width: 900px;
@@ -107,6 +108,122 @@
         #direccionModal .modal-content button[type="submit"]:hover {
             background: #222;
         }
+        /* Modal de usuario mejorado */
+        #usuarioModal .modal-content {
+            background: #fff;
+            margin: 60px auto;
+            padding: 32px 28px 24px 28px;
+            border-radius: 18px;
+            max-width: 420px;
+            position: relative;
+            box-shadow: 0 8px 32px rgba(0,0,0,0.18);
+            animation: modalFadeIn 0.3s;
+        }
+        @keyframes modalFadeIn {
+            from { transform: translateY(-40px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+        #usuarioModal .close {
+            position: absolute;
+            top: 14px;
+            right: 22px;
+            font-size: 2.2rem;
+            color: #888;
+            cursor: pointer;
+            transition: color 0.2s;
+        }
+        #usuarioModal .close:hover {
+            color: #c00;
+        }
+        #usuarioModal form label {
+            font-weight: 500;
+            margin-bottom: 4px;
+            color: #222;
+        }
+        #usuarioModal form input[type="text"],
+        #usuarioModal form input[type="email"],
+        #usuarioModal form input[type="password"] {
+            padding: 9px 12px;
+            border: 1.5px solid #ccc;
+            border-radius: 7px;
+            font-size: 1em;
+            background: #fafafa;
+            margin-bottom: 14px;
+            transition: border 0.2s;
+        }
+        #usuarioModal form input:focus {
+            border: 1.5px solid #111;
+            background: #fff;
+            outline: none;
+        }
+        #usuarioModal .perfil-btn {
+            width: 100%;
+            margin-top: 10px;
+            font-size: 1.08em;
+            padding: 11px 0;
+        }
+        #usuarioModal .password-toggle {
+            position: absolute;
+            right: 32px;
+            top: 60px;
+            cursor: pointer;
+            font-size: 1.2em;
+            color: #888;
+            background: none;
+            border: none;
+        }
+        /* Modal de dirección mejorado */
+        #direccionModal .modal-content {
+            background: #fff;
+            margin: 60px auto;
+            padding: 32px 28px 24px 28px;
+            border-radius: 18px;
+            max-width: 500px;
+            position: relative;
+            box-shadow: 0 8px 32px rgba(0,0,0,0.18);
+            animation: modalFadeIn 0.3s;
+        }
+        @keyframes modalFadeIn {
+            from { transform: translateY(-40px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+        #direccionModal .close {
+            position: absolute;
+            top: 14px;
+            right: 22px;
+            font-size: 2.2rem;
+            color: #888;
+            cursor: pointer;
+            transition: color 0.2s;
+        }
+        #direccionModal .close:hover {
+            color: #c00;
+        }
+        #direccionModal form label {
+            font-weight: 500;
+            margin-bottom: 4px;
+            color: #222;
+        }
+        #direccionModal form input[type="text"] {
+            padding: 9px 12px;
+            border: 1.5px solid #ccc;
+            border-radius: 7px;
+            font-size: 1em;
+            background: #fafafa;
+            margin-bottom: 14px;
+            transition: border 0.2s;
+        }
+        #direccionModal form input:focus {
+            border: 1.5px solid #111;
+            background: #fff;
+            outline: none;
+        }
+        #direccionModal .perfil-btn {
+            width: 100%;
+            margin-top: 10px;
+            font-size: 1.08em;
+            padding: 11px 0;
+        }
     </style>
 </head>
 <body>
@@ -175,7 +292,7 @@
                     <tr><td colspan="8" style="text-align:center; color:#888;">No tienes direcciones guardadas.</td></tr>
                 <?php else: ?>
                     <?php foreach ($direcciones as $dir): ?>
-                        <tr>
+                        <tr data-id="<?= $dir['id'] ?>">
                             <td><?php echo htmlspecialchars($dir['calle']); ?></td>
                             <td><?php echo htmlspecialchars($dir['numero']); ?></td>
                             <td><?php echo htmlspecialchars($dir['colonia']); ?></td>
@@ -184,7 +301,16 @@
                             <td><?php echo htmlspecialchars($dir['cp']); ?></td>
                             <td><?php echo htmlspecialchars($dir['referencias']); ?></td>
                             <td>
-                                <button class="perfil-btn">Editar</button>
+                                <button class="perfil-btn"
+                                    data-id="<?= $dir['id'] ?>"
+                                    data-calle="<?= htmlspecialchars($dir['calle'], ENT_QUOTES) ?>"
+                                    data-numero="<?= htmlspecialchars($dir['numero'], ENT_QUOTES) ?>"
+                                    data-colonia="<?= htmlspecialchars($dir['colonia'], ENT_QUOTES) ?>"
+                                    data-ciudad="<?= htmlspecialchars($dir['ciudad'], ENT_QUOTES) ?>"
+                                    data-estado="<?= htmlspecialchars($dir['estado'], ENT_QUOTES) ?>"
+                                    data-cp="<?= htmlspecialchars($dir['cp'], ENT_QUOTES) ?>"
+                                    data-referencias="<?= htmlspecialchars($dir['referencias'], ENT_QUOTES) ?>"
+                                >Editar</button>
                                 <button class="perfil-btn" style="background:#c00;">Eliminar</button>
                             </td>
                         </tr>
@@ -261,7 +387,7 @@
             </div>
             <div>
                 <label>Referencias:</label>
-                <input type="text" name="referencias" id="referencias">
+                <input type="text" name="referencias" id="referencias" placeholder="Opcional">
             </div>
             <button type="submit" class="perfil-btn" style="margin-top:10px;">Guardar</button>
         </form>
@@ -276,6 +402,30 @@
         <div id="pedidoDetallesBody">
             <!-- Aquí se cargan los detalles del pedido -->
         </div>
+    </div>
+</div>
+
+<!-- Modal para editar datos de usuario -->
+<div id="usuarioModal" class="modal" style="display:none; position:fixed; z-index:2000; left:0; top:0; width:100vw; height:100vh; background:rgba(0,0,0,0.4);">
+    <div class="modal-content">
+        <span class="close" id="cerrarUsuarioModal">&times;</span>
+        <h2 style="margin-bottom:18px;">Editar datos de la cuenta</h2>
+        <form id="usuarioForm" autocomplete="off">
+            <div>
+                <label for="usuarioNombre">Nombre:</label>
+                <input type="text" name="nombre" id="usuarioNombre" required>
+            </div>
+            <div>
+                <label for="usuarioCorreo">Correo:</label>
+                <input type="email" name="correo" id="usuarioCorreo" required>
+            </div>
+            <div style="position:relative;">
+                <label for="usuarioContrasena">Nueva contraseña:</label>
+                <input type="password" name="contraseña" id="usuarioContrasena" autocomplete="new-password">
+                <button type="button" class="password-toggle" tabindex="-1" onclick="togglePasswordUsuario()" aria-label="Mostrar/Ocultar contraseña">&#128065;</button>
+            </div>
+            <button type="submit" class="perfil-btn">Guardar cambios</button>
+        </form>
     </div>
 </div>
 
@@ -304,6 +454,32 @@ window.onclick = function(event) {
     if (event.target == document.getElementById('pedidoModal')) {
         document.getElementById('pedidoModal').style.display = 'none';
     }
+    if (event.target == document.getElementById('usuarioModal')) {
+        document.getElementById('usuarioModal').style.display = 'none';
+    }
+};
+
+// --- ENVÍO AJAX DEL FORMULARIO DE DIRECCIÓN ---
+document.getElementById('direccionForm').onsubmit = function(e) {
+    e.preventDefault();
+    const form = e.target;
+    const data = new FormData(form);
+    const isEdit = form.id.value !== '';
+
+    fetch(isEdit ? '/Tienda_SNKRS/public/usuario/editarDireccion' : '/Tienda_SNKRS/public/usuario/guardarDireccion', {
+        method: 'POST',
+        body: data
+    })
+    .then(res => res.json())
+    .then(resp => {
+        if (resp.success) {
+            alert(isEdit ? 'Dirección actualizada correctamente' : 'Dirección guardada correctamente');
+            location.reload(); // O actualiza la tabla dinámicamente
+        } else {
+            alert('Error: ' + (resp.error || 'No se pudo guardar'));
+        }
+    })
+    .catch(() => alert('Error de red al guardar la dirección.'));
 };
 
 // MODAL PEDIDO
@@ -326,24 +502,106 @@ document.querySelector('.perfil-add-btn').onclick = function() {
 };
 document.querySelectorAll('.perfil-direcciones-list .perfil-btn:not([style])').forEach(btn => {
     btn.onclick = function() {
-        // Aquí deberías pasar los datos reales de la dirección
         abrirDireccionModal({
-            id: 1,
-            calle: 'Av. Principal',
-            numero: '123',
-            colonia: 'Centro',
-            ciudad: 'CDMX',
-            estado: 'CDMX',
-            cp: '01000',
-            referencias: 'Entre calle A y B'
+            id: btn.getAttribute('data-id'),
+            calle: btn.getAttribute('data-calle'),
+            numero: btn.getAttribute('data-numero'),
+            colonia: btn.getAttribute('data-colonia'),
+            ciudad: btn.getAttribute('data-ciudad'),
+            estado: btn.getAttribute('data-estado'),
+            cp: btn.getAttribute('data-cp'),
+            referencias: btn.getAttribute('data-referencias')
         });
     };
 });
 document.querySelectorAll('.perfil-pedidos-list .perfil-btn').forEach(btn => {
     btn.onclick = function() {
-        abrirPedidoModal(1001); // Aquí deberías pasar el ID real del pedido
+        const row = btn.closest('tr');
+        const pedidoId = row.querySelector('td').textContent.trim(); // Asume que el primer td es el ID
+        document.getElementById('pedidoDetallesBody').innerHTML = '<p>Cargando detalles...</p>';
+        document.getElementById('pedidoModal').style.display = 'block';
+        fetch('/Tienda_SNKRS/public/usuario/pedido-detalle/' + pedidoId)
+            .then(res => res.text())
+            .then(html => {
+                document.getElementById('pedidoDetallesBody').innerHTML = html;
+            })
+            .catch(() => {
+                document.getElementById('pedidoDetallesBody').innerHTML = '<p style="color:#c00;">Error al cargar detalles.</p>';
+            });
     };
 });
+
+// --- ELIMINAR DIRECCIÓN ---
+document.querySelectorAll('.perfil-direcciones-list .perfil-btn[style*="background:#c00"]')
+    .forEach(btn => {
+        btn.onclick = function() {
+            if (!confirm('¿Seguro que deseas eliminar esta dirección?')) return;
+            // Obtener el id de la dirección de la fila
+            const row = btn.closest('tr');
+            // Busca el id en el array PHP renderizado (puedes agregar un data-id en el botón o la fila para mayor robustez)
+            // Aquí lo hacemos por índice de fila, pero lo ideal es usar un atributo data-id
+            // Suponiendo que el id está oculto en un input o atributo:
+            // <tr data-id="<?= $dir['id'] ?>">
+            const direccionId = row.getAttribute('data-id');
+            if (!direccionId) {
+                alert('No se pudo obtener el ID de la dirección.');
+                return;
+            }
+            const formData = new FormData();
+            formData.append('id', direccionId);
+            fetch('/Tienda_SNKRS/public/usuario/eliminarDireccion', {
+                method: 'POST',
+                body: formData
+            })
+            .then(res => res.json())
+            .then(resp => {
+                if (resp.success) {
+                    row.remove();
+                } else {
+                    alert('Error: ' + (resp.error || 'No se pudo eliminar la dirección'));
+                }
+            })
+            .catch(() => alert('Error de red al eliminar la dirección.'));
+        };
+    });
+
+// Abrir modal de editar datos
+const editarDatosBtn = document.querySelector('.perfil-datos .perfil-btn');
+editarDatosBtn.onclick = function() {
+    document.getElementById('usuarioNombre').value = "<?= htmlspecialchars($usuario['nombre'], ENT_QUOTES) ?>";
+    document.getElementById('usuarioCorreo').value = "<?= htmlspecialchars($usuario['correo'], ENT_QUOTES) ?>";
+    document.getElementById('usuarioContrasena').value = '';
+    document.getElementById('usuarioModal').style.display = 'block';
+};
+document.getElementById('cerrarUsuarioModal').onclick = function() {
+    document.getElementById('usuarioModal').style.display = 'none';
+};
+// Enviar datos por AJAX
+const usuarioForm = document.getElementById('usuarioForm');
+usuarioForm.onsubmit = function(e) {
+    e.preventDefault();
+    const form = e.target;
+    const data = new FormData(form);
+    fetch('/Tienda_SNKRS/public/usuario/actualizar', {
+        method: 'POST',
+        body: data
+    })
+    .then(res => res.json())
+    .then(resp => {
+        if (resp.success) {
+            alert('Datos actualizados correctamente');
+            location.reload();
+        } else {
+            alert('Error: ' + (resp.error || 'No se pudo actualizar'));
+        }
+    })
+    .catch(() => alert('Error de red al actualizar los datos.'));
+};
+
+function togglePasswordUsuario() {
+    const input = document.getElementById('usuarioContrasena');
+    input.type = input.type === 'password' ? 'text' : 'password';
+}
 </script>
 <footer>
     <p>© 2025 SNKRS, Inc. Todos los derechos reservados.</p>

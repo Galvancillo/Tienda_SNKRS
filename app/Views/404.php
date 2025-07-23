@@ -57,7 +57,7 @@
         <div class="error-code">404</div>
         <h1>Página no encontrada</h1>
         <p>Lo sentimos, la página que estás buscando no existe o ha sido movida.</p>
-        <a href="/Tienda_SNKRS/public/" class="btn">Volver al Inicio</a>
+        <a href="/Tienda_SNKRS/public/productos/nuevo" class="btn">Volver al Inicio</a>
     </div>
 </body>
 </html> 

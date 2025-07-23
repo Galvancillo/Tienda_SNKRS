@@ -105,6 +105,7 @@ class Router {
         $this->add('GET', '/admin/pedidos', 'App\Controllers\AdminController', 'pedidos');
         $this->add('GET', '/admin/productos/tallas', 'App\\Controllers\\ProductoController', 'obtenerTallas');
         $this->add('GET', '/admin/productos/categorias', 'App\\Controllers\\ProductoController', 'obtenerCategorias');
+        $this->add('GET', '/admin/pedidos/detalle/{id}', 'App\\Controllers\\AdminController', 'detallePedidoAjax');
 
         // Rutas de API para productos
         $this->add('GET', '/admin/productos/obtener/{id}', 'App\Controllers\ProductoController', 'obtenerProducto');
@@ -125,5 +126,13 @@ class Router {
         // Rutas de perfil de usuario
         $this->add('GET', '/usuario/perfil', 'App\\Controllers\\UsuarioController', 'perfil');
         $this->add('POST', '/usuario/actualizar', 'App\\Controllers\\UsuarioController', 'actualizarPerfil');
+        $this->add('POST', '/usuario/guardarDireccion', 'App\\Controllers\\UsuarioController', 'guardarDireccion');
+        $this->add('POST', '/usuario/eliminarDireccion', 'App\\Controllers\\UsuarioController', 'eliminarDireccion');
+        $this->add('POST', '/usuario/editarDireccion', 'App\\Controllers\\UsuarioController', 'editarDireccion');
+        $this->add('GET', '/usuario/checkout', 'App\\Controllers\\UsuarioController', 'checkout');
+        $this->add('POST', '/usuario/confirmarPedido', 'App\\Controllers\\UsuarioController', 'confirmarPedido');
+        $this->add('POST', '/usuario/finalizarPago', 'App\\Controllers\\UsuarioController', 'finalizarPago');
+        $this->add('GET', '/usuario/compra-exitosa', 'App\\Controllers\\UsuarioController', 'compraExitosa');
+        $this->add('GET', '/usuario/pedido-detalle/{id}', 'App\\Controllers\\UsuarioController', 'detallePedidoAjax');
     }
 } 
