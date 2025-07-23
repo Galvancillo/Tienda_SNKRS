@@ -138,6 +138,7 @@ class ProductoController {
             $descripcion = $_POST['descripcion'] ?? '';
             $precio = $_POST['precio'] ?? 0;
             $id_categoria = $_POST['categoria'] ?? null;
+            $stock = $_POST['stock'] ?? 0;
 
             // Calcular stock total sumando los valores de stock_talla
             $stock = 0;
@@ -166,15 +167,15 @@ class ProductoController {
             }
 
             if ($imagenInfo) {
-                $sql = "UPDATE producto SET nombre = ?, descripcion = ?, precio = ?, id_categoria = ?, imagen_url = ?, imagen_nombre = ?, imagen_tipo = ? WHERE id = ?";
+                $sql = "UPDATE producto SET nombre = ?, descripcion = ?, precio = ?, id_categoria = ?, imagen_url = ?, imagen_nombre = ?, imagen_tipo = ?, stock = ? WHERE id = ?";
                 $params = [
-                    $nombre, $descripcion, $precio, $id_categoria,
+                    $nombre, $descripcion, $precio, $id_categoria, $stock,
                     $imagenInfo['url'], $imagenInfo['nombre'], $imagenInfo['tipo'],
                     $id
                 ];
             } else {
-                $sql = "UPDATE producto SET nombre = ?, descripcion = ?, precio = ?, id_categoria = ? WHERE id = ?";
-                $params = [$nombre, $descripcion, $precio, $id_categoria, $id];
+                $sql = "UPDATE producto SET nombre = ?, descripcion = ?, precio = ?, id_categoria = ?, stock = ? WHERE id = ?";
+                $params = [$nombre, $descripcion, $precio, $id_categoria, $stock, $id];
             }
             $this->db->query($sql, $params);
 
@@ -185,6 +186,7 @@ class ProductoController {
                     $this->db->query("INSERT INTO producto_talla (id_producto, id_talla, stock) VALUES (?, ?, ?)", [$id, $id_talla, $stock]);
                 }
             }
+            
 
             header('Content-Type: application/json');
             echo json_encode(['success' => true]);
@@ -272,7 +274,7 @@ class ProductoController {
             // Asegurarse de que la respuesta sea JSON
             header('Content-Type: application/json');
 
-            $sql = "SELECT id, nombre, descripcion, precio, stock, imagen_url FROM producto WHERE id = ?";
+            $sql = "SELECT p.id, p.nombre, p.descripcion, p.precio, p.stock, p.imagen_url, p.id_categoria, c.nombre AS categoria_nombre FROM producto p LEFT JOIN categoria c ON p.id_categoria = c.id WHERE p.id = ?";
             $producto = $this->db->query($sql, [$id])->fetch();
             
             if (!$producto) {
@@ -283,6 +285,15 @@ class ProductoController {
                 ]);
                 return;
             }
+
+            // Obtener stocks por talla
+            $stocks = $this->db->query("SELECT pt.id_talla, t.talla, pt.stock FROM producto_talla pt JOIN talla t ON pt.id_talla = t.id WHERE pt.id_producto = ? ORDER BY t.talla ASC", [$id])->fetchAll();
+            $producto['stocks_por_talla'] = array_map(function($row) {
+                return [
+                    'talla' => ['id' => $row['id_talla'], 'talla' => $row['talla']],
+                    'stock' => $row['stock']
+                ];
+            }, $stocks);
 
             echo json_encode($producto);
         } catch (\Exception $e) {

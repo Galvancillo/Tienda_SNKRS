@@ -266,10 +266,6 @@
         </main>
     </div>
 
-    <!-- Footer -->
-    <footer class="footer">
-        <p>© 2025 SNKRS, Inc. Todos los derechos reservados.</p>
-    </footer>
 
     <!-- Modal para agregar/editar producto -->
     <div id="productoModal" class="modal">
@@ -420,47 +416,73 @@
         function editarProducto(id) {
             document.getElementById('modalTitle').textContent = 'Editar Producto';
             document.getElementById('productoId').value = id;
-            
-            // Obtener datos del producto
-            fetch(`/Tienda_SNKRS/public/admin/productos/obtener/${id}`)
-                .then(response => {
-                    if (!response.ok) {
-                        throw new Error('Error en la respuesta del servidor');
-                    }
+            document.getElementById('productoModal').style.display = 'block'; // Mostrar modal antes
+
+            Promise.all([
+                fetch('/Tienda_SNKRS/public/admin/productos/categorias').then(res => res.json()),
+                fetch('/Tienda_SNKRS/public/admin/productos/tallas').then(res => res.json())
+            ]).then(([catData, tallaData]) => {
+                // Llenar categorías
+                const select = document.getElementById('categoria');
+                select.innerHTML = '';
+                if (catData.success) {
+                    catData.categorias.forEach(cat => {
+                        const option = document.createElement('option');
+                        option.value = cat.id;
+                        option.textContent = cat.nombre;
+                        select.appendChild(option);
+                    });
+                }
+                // Llenar tallas
+                const container = document.getElementById('tallasContainer');
+                container.innerHTML = '';
+                if (tallaData.success) {
+                    tallaData.tallas.forEach(talla => {
+                        const div = document.createElement('div');
+                        div.style.display = 'flex';
+                        div.style.alignItems = 'center';
+                        div.innerHTML = `<label style='margin-right:4px;'>${talla.talla}</label><input type='number' min='0' name='stock_talla[${talla.id}]' style='width:60px;' value='0'>`;
+                        container.appendChild(div);
+                    });
+                }
+                // Ahora sí, obtener los datos del producto
+                return fetch(`/Tienda_SNKRS/public/admin/productos/obtener/${id}`).then(response => {
+                    if (!response.ok) throw new Error('Error en la respuesta del servidor');
                     return response.json();
-                })
-                .then(producto => {
-                    document.getElementById('nombre').value = producto.nombre;
-                    document.getElementById('descripcion').value = producto.descripcion;
-                    document.getElementById('precio').value = producto.precio;
-                    document.getElementById('stock').value = producto.stock;
-                    document.getElementById('categoria').value = producto.categoria_id; // Asignar categoría
-                    
-                    // Asignar stocks por talla
-                    const tallasContainer = document.getElementById('tallasContainer');
-                    tallasContainer.innerHTML = ''; // Limpiar antes de cargar
-                    if (producto.stocks_por_talla) {
-                        producto.stocks_por_talla.forEach(stock => {
-                            const div = document.createElement('div');
-                            div.style.display = 'flex';
-                            div.style.alignItems = 'center';
-                            div.innerHTML = `<label style='margin-right:4px;'>${stock.talla.talla}</label><input type='number' min='0' name='stock_talla[${stock.talla.id}]' style='width:60px;' value='${stock.stock}'>`;
-                            tallasContainer.appendChild(div);
-                        });
-                    }
-
-                    // Mostrar imagen actual si existe
-                    if (producto.imagen_url) {
-                        document.getElementById('previewImg').src = producto.imagen_url;
-                        document.getElementById('imagenPreview').style.display = 'block';
-                    }
-                })
-                .catch(error => {
-                    console.error('Error:', error);
-                    alert('Error al cargar los datos del producto');
                 });
+            }).then(producto => {
+                document.getElementById('nombre').value = producto.nombre;
+                document.getElementById('descripcion').value = producto.descripcion;
+                document.getElementById('precio').value = producto.precio;
+                // Chequeo defensivo
+                const selectCategoria = document.getElementById('categoria');
+                if (selectCategoria) {
+                    selectCategoria.value = producto.id_categoria;
+                } else {
+                    console.error('No se encontró el select de categoría en el DOM');
+                }
 
-            document.getElementById('productoModal').style.display = 'block';
+                // Asignar stocks por talla
+                const tallasContainer = document.getElementById('tallasContainer');
+                if (producto.stocks_por_talla) {
+                    tallasContainer.innerHTML = '';
+                    producto.stocks_por_talla.forEach(stock => {
+                        const div = document.createElement('div');
+                        div.style.display = 'flex';
+                        div.style.alignItems = 'center';
+                        div.innerHTML = `<label style='margin-right:4px;'>${stock.talla.talla}</label><input type='number' min='0' name='stock_talla[${stock.talla.id}]' style='width:60px;' value='${stock.stock}'>`;
+                        tallasContainer.appendChild(div);
+                    });
+                }
+
+                if (producto.imagen_url) {
+                    document.getElementById('previewImg').src = producto.imagen_url;
+                    document.getElementById('imagenPreview').style.display = 'block';
+                }
+            }).catch(error => {
+                console.error('Error:', error);
+                alert('Error al cargar los datos del producto');
+            });
         }
 
         function eliminarProducto(id) {

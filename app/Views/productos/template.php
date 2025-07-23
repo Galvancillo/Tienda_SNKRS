@@ -19,12 +19,11 @@
     <div class="main-container">
         <nav class="navbar">
             <div class="navbar-content">
-                <a href="/Tienda_SNKRS/public/" class="logo-link">
+                <a href="/Tienda_SNKRS/public/productos/nuevo" class="logo-link">
                     <img src="/Tienda_SNKRS/public/assets/img/logo.png" alt="Logo" class="logo-img">
                     <span class="brand">SNKRS WORLD</span>
                 </a>
                 <ul class="nav-menu">
-                    <li><a href="/Tienda_SNKRS/public/productos/nuevo">Lo Nuevo</a></li>
                     <li><a href="/Tienda_SNKRS/public/productos/hombre">Hombre</a></li>
                     <li><a href="/Tienda_SNKRS/public/productos/mujer">Mujer</a></li>
                     <li><a href="/Tienda_SNKRS/public/productos/ninos">Niño/a</a></li>
